@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "e/Z1sCyP23U=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\thoang5_mantu\\Documents\\Sources\\Repos\\KoiCareServer\\KoiCare.Application\\KoiCare.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\thoang5_mantu\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\thoang5_mantu\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\thoang5_mantu\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
