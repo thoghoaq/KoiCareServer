@@ -15,5 +15,8 @@ namespace KoiCare.Domain.Entities
         public bool IsActive { get; set; }
 
         public virtual Role Role { get; set; } = null!;
+        public virtual ICollection<Pond> Ponds { get; set; } = [];
+        public virtual ICollection<BlogPost> BlogPosts { get; set; } = [];
+        public virtual ICollection<Order> Orders { get; set; } = [];
     }
 }

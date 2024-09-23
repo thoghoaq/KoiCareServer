@@ -3,6 +3,7 @@ using System;
 using KoiCare.Infrastructure.Dependencies.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KoiCare.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923115326_AddEntities")]
+    partial class AddEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("BlogPosts");
+                    b.ToTable("BlogPost");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Category", b =>
@@ -66,7 +69,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.FeedCalculation", b =>
@@ -96,7 +99,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("KoiIndividualId");
 
-                    b.ToTable("FeedCalculations");
+                    b.ToTable("FeedCalculation");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.FeedingSchedule", b =>
@@ -120,7 +123,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("KoiIndividualId");
 
-                    b.ToTable("FeedingSchedules");
+                    b.ToTable("FeedingSchedule");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.KoiGrowth", b =>
@@ -147,7 +150,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("KoiIndividualId");
 
-                    b.ToTable("KoiGrowths");
+                    b.ToTable("KoiGrowth");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.KoiIndividual", b =>
@@ -203,7 +206,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("PondId");
 
-                    b.ToTable("KoiIndividuals");
+                    b.ToTable("KoiIndividual");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.KoiType", b =>
@@ -223,7 +226,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KoiTypes");
+                    b.ToTable("KoiType");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Order", b =>
@@ -253,7 +256,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.OrderDetail", b =>
@@ -282,7 +285,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.PerfectWaterVolume", b =>
@@ -315,7 +318,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("KoiTypeId");
 
-                    b.ToTable("PerfectWaterVolumes");
+                    b.ToTable("PerfectWaterVolume");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Pond", b =>
@@ -358,7 +361,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Ponds");
+                    b.ToTable("Pond");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Product", b =>
@@ -389,7 +392,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Role", b =>
@@ -441,7 +444,7 @@ namespace KoiCare.Infrastructure.Migrations
                     b.HasIndex("PondId")
                         .IsUnique();
 
-                    b.ToTable("SaltRequirements");
+                    b.ToTable("SaltRequirement");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.User", b =>
@@ -519,7 +522,7 @@ namespace KoiCare.Infrastructure.Migrations
 
                     b.HasIndex("PondId");
 
-                    b.ToTable("WaterParameters");
+                    b.ToTable("WaterParameter");
                 });
 
             modelBuilder.Entity("KoiCare.Domain.Entities.BlogPost", b =>
