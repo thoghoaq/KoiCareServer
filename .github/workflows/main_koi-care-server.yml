@@ -32,12 +32,12 @@ jobs:
         with:
           files: '${{env.GITHUB_WORKSPACE}}\myapp\appsettings.json'
         env:
-          ConnectionStrings.DefaultConnection: ${{ vars.DATABASE_CONNECTION_STRING }}
-          FirebaseAdminSdk: ${{ vars.FIREBASE_ADMIN_SDK }}
-          Authentication.TokenUri: ${{ vars.AUTHENTICATION_TOKEN_URI }}
-          Authentication.RefreshUri: ${{ vars.AUTHENTICATION_REFRESH_URI }}
-          Authentication.Audience: ${{ vars.AUTHENTICATION_AUDIENCE }}
-          Authentication.ValidIssuer: ${{ vars.AUTHENTICATION_VALID_ISSUER }}
+          ConnectionStrings.DefaultConnection: ${{ secrets.DATABASE_CONNECTION_STRING }}
+          FirebaseAdminSdk: ${{ secrets.FIREBASE_ADMIN_SDK }}
+          Authentication.TokenUri: ${{ secrets.AUTHENTICATION_TOKEN_URI }}
+          Authentication.RefreshUri: ${{ secrets.AUTHENTICATION_REFRESH_URI }}
+          Authentication.Audience: ${{ secrets.AUTHENTICATION_AUDIENCE }}
+          Authentication.ValidIssuer: ${{ secrets.AUTHENTICATION_VALID_ISSUER }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
