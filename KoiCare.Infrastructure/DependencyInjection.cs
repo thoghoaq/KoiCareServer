@@ -6,7 +6,6 @@ using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Infrastructure.Dependencies.Database;
 using KoiCare.Infrastructure.Dependencies.Firebase.Authentication;
 using KoiCare.Infrastructure.Dependencies.Localization;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,6 @@
-﻿namespace KoiCare.Application.Abtractions.Database
+﻿using System.Linq.Expressions;
+
+namespace KoiCare.Application.Abtractions.Database
 {
     public interface IRepository<T> where T : class
     {
@@ -6,6 +8,8 @@
         void Update(T entity);
         void Remove(T entity);
         IQueryable<T> Queryable();
+        IQueryable<T> QueryableInclude(params Expression<Func<T, object>>[] includes);
         T? Find(int id);
+        Task AddAsync(T entity, CancellationToken cancellationToken);
     }
 }

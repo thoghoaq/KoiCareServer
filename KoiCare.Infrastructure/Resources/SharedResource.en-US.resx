@@ -103,4 +103,13 @@
   <data name="User created successfully" xml:space="preserve">
     <value>User created successfully</value>
   </data>
+  <data name="Email already exists" xml:space="preserve">
+    <value>Email already exists</value>
+  </data>
+  <data name="Firebase register return null" xml:space="preserve">
+    <value>Firebase register return null</value>
+  </data>
+  <data name="Cannot create admin user" xml:space="preserve">
+    <value>Cannot create admin user</value>
+  </data>
 </root>

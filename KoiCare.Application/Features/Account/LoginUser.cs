@@ -21,7 +21,7 @@ namespace KoiCare.Application.Features.Account
             public string? Message { get; set; }
         }
 
-        public class Handler(IJwtProvider jwtProvider, IMediator mediator, IAppLocalizer localizer) : IRequestHandler<Command, CommandResult<Result>>
+        public class Handler(IJwtProvider jwtProvider, IAppLocalizer localizer) : IRequestHandler<Command, CommandResult<Result>>
         {
             public async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
             {
