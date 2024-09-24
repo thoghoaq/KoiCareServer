@@ -112,4 +112,7 @@
   <data name="Cannot create admin user" xml:space="preserve">
     <value>Bạn không thể tạo tài khoản admin</value>
   </data>
+  <data name="Login successfully" xml:space="preserve">
+    <value>Đăng nhập thành công</value>
+  </data>
 </root>

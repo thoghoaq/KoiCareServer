@@ -112,4 +112,7 @@
   <data name="Cannot create admin user" xml:space="preserve">
     <value>Cannot create admin user</value>
   </data>
+  <data name="Login successfully" xml:space="preserve">
+    <value>Login successfully</value>
+  </data>
 </root>

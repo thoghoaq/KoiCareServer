@@ -5,7 +5,7 @@ namespace KoiCare.Api.Controllers
 {
     public abstract class BaseController : ControllerBase
     {
-        public IActionResult CommandResult<T>(CommandResult<T> result)
+        public ActionResult CommandResult<T>(CommandResult<T> result)
         {
             if (result.StatusCode != null)
             {
