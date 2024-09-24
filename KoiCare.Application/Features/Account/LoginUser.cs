@@ -14,6 +14,8 @@ namespace KoiCare.Application.Features.Account
             public required string Password { get; set; }
         }
 
+        // cde ádasd
+
         public class Result
         {
             public string? AccessToken { get; set; }
