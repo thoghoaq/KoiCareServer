@@ -14,16 +14,12 @@ namespace KoiCare.Application.Features.Account
             public required string Password { get; set; }
         }
 
-        // cde ádasd
-
         public class Result
         {
             public string? AccessToken { get; set; }
             public string? RefreshToken { get; set; }
             public string? Message { get; set; }
         }
-
-        // comentasasdad    
 
         public class Handler(IJwtProvider jwtProvider, IAppLocalizer localizer) : IRequestHandler<Command, CommandResult<Result>>
         {
