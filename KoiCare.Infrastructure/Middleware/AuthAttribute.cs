@@ -9,14 +9,14 @@ using System.IdentityModel.Tokens.Jwt;
 namespace KoiCare.Infrastructure.Middleware
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class AuthAttribute(string? role) : Attribute, IAuthorizationFilter
+    public class AuthAttribute(string? role = null) : Attribute, IAuthorizationFilter
     {
         public string? Role { get; set; } = role;
         public bool AllowAnonymous { get; set; } = false;
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (AllowAnonymous || Role.IsNullOrEmpty())
+            if (AllowAnonymous)
             {
                 return;
             }
@@ -48,6 +48,11 @@ namespace KoiCare.Infrastructure.Middleware
             if (!user.IsActive)
             {
                 context.Result = new UnauthorizedResult();
+                return;
+            }
+
+            if (Role.IsNullOrEmpty())
+            {
                 return;
             }
 

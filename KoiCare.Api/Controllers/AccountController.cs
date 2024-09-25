@@ -1,4 +1,5 @@
 ﻿using KoiCare.Application.Features.Account;
+using KoiCare.Infrastructure.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,38 @@ namespace KoiCare.Api.Controllers
                 return BadRequest(ModelState);
             }
             var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
+
+        [Auth]
+        [HttpGet("user")]
+        public async Task<ActionResult<GetUser.Result>> GetUser([FromQuery] GetUser.Query query)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await mediator.Send(query);
+            return CommandResult(result);
+        }
+
+        [Auth]
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<RefreshToken.Result>> RefreshToken([FromBody] RefreshToken.Command command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
+
+        [Auth]
+        [HttpGet("logged-user")]
+        public async Task<ActionResult<GetUser.Result>> LoggedUser()
+        {
+            var result = await mediator.Send(new GetUser.Query());
             return CommandResult(result);
         }
     }

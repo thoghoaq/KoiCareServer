@@ -1,9 +1,9 @@
-﻿using KoiCare.Application.Abtractions.Authentication;
-using KoiCare.Application.Abtractions.Database;
+﻿using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
 using KoiCare.Domain.Entities;
+using KoiCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,62 +11,61 @@ using System.Net;
 
 namespace KoiCare.Application.Features.Account
 {
-    public class LoginUser
+    public class GetUser
     {
-        public class Command : IRequest<CommandResult<Result>>
+        public class Query : IRequest<CommandResult<Result>>
         {
-            public required string Email { get; set; }
-            public required string Password { get; set; }
+            public int? Id { get; set; }
+            public string? Email { get; set; }
         }
 
         public class Result
         {
-            public string? AccessToken { get; set; }
-            public string? RefreshToken { get; set; }
+            public int Id { get; set; }
+            public string? Email { get; set; }
+            public string? Username { get; set; }
             public int RoleId { get; set; }
             public string RoleName { get; set; } = string.Empty;
-            public string UserName { get; set; } = string.Empty;
-            public string? Message { get; set; }
+            public bool IsActive { get; set; }
+            public bool IsAdmin => RoleId == (int)ERole.Admin;
         }
 
         public class Handler(
-            IJwtProvider jwtProvider,
             IRepository<User> userRepos,
             IAppLocalizer localizer,
-            ILogger<LoginUser> logger,
+            ILogger<GetUser> logger,
             ILoggedUser loggedUser,
             IUnitOfWork unitOfWork
-            ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+            ) : BaseRequestHandler<Query, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
         {
-            private readonly IJwtProvider _jwtProvider = jwtProvider;
             private readonly IRepository<User> _userRepos = userRepos;
 
-            public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
+            public override async Task<CommandResult<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var response = await _jwtProvider.GenerateTokenAsync(request.Email, request.Password, cancellationToken);
-                    if (string.IsNullOrEmpty(response?.IdToken))
-                    {
-                        return CommandResult<Result>.Fail(_localizer["Wrong email or password"]);
-                    }
-
+                    var email = request.Email ?? _loggedUser.Email;
                     var user = await _userRepos.Queryable()
                         .Include(u => u.Role)
-                        .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+                        .FirstOrDefaultAsync(x => request.Id.HasValue ? x.Id == request.Id : x.Email == email, cancellationToken);
                     if (user == null)
                     {
                         return CommandResult<Result>.Fail(_localizer["User not found"]);
                     }
 
+                    if (_loggedUser.RoleId != (int)ERole.Admin && _loggedUser.Email != user.Email)
+                    {
+                        return CommandResult<Result>.Fail(HttpStatusCode.Forbidden, _localizer["Unauthorized"]);
+                    }
+
                     return CommandResult<Result>.Success(new Result
                     {
-                        AccessToken = response!.IdToken,
-                        RefreshToken = response.RefreshToken!,
+                        Id = user.Id,
+                        Email = user.Email,
+                        Username = user.Username,
                         RoleId = user.RoleId,
                         RoleName = user.Role.Name,
-                        UserName = user.Username,
-                        Message = _localizer["Login successfully"]
+                        IsActive = user.IsActive
                     });
                 }
                 catch (Exception ex)

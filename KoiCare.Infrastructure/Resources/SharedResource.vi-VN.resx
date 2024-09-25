@@ -115,4 +115,13 @@
   <data name="Login successfully" xml:space="preserve">
     <value>Đăng nhập thành công</value>
   </data>
+  <data name="Invalid refresh token" xml:space="preserve">
+    <value>Token không hợp lệ</value>
+  </data>
+  <data name="Token refreshed" xml:space="preserve">
+    <value>Token refreshed</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Unauthorized</value>
+  </data>
 </root>

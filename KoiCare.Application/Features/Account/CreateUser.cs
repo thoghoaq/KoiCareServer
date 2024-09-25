@@ -1,11 +1,13 @@
 ﻿using KoiCare.Application.Abtractions.Authentication;
 using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
+using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
 using KoiCare.Domain.Entities;
 using KoiCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -29,25 +31,35 @@ namespace KoiCare.Application.Features.Account
             public string? Message { get; set; }
         }
 
-        public class Handler(IAppLocalizer localizer, IRepository<User> userRepos, IUnitOfWork unitOfWork, IAuthenticationService authenticationService) : IRequestHandler<Command, CommandResult<Result>>
+        public class Handler(
+            IRepository<User> userRepos,
+            IAuthenticationService authenticationService,
+            IAppLocalizer localizer,
+            ILogger<CreateUser> logger,
+            ILoggedUser loggedUser,
+            IUnitOfWork unitOfWork
+            ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
         {
-            public async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
+            private readonly IAuthenticationService _authenticationService = authenticationService;
+            private readonly IRepository<User> _userRepos = userRepos;
+
+            public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
                     if (request.RoleId == ERole.Admin)
                     {
-                        return CommandResult<Result>.Fail(localizer["Cannot create admin user"]);
+                        return CommandResult<Result>.Fail(_localizer["Cannot create admin user"]);
                     }
-                    var existedUser = await userRepos.Queryable().FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+                    var existedUser = await _userRepos.Queryable().FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
                     if (existedUser != null)
                     {
-                        return CommandResult<Result>.Fail(localizer["Email already exists"]);
+                        return CommandResult<Result>.Fail(_localizer["Email already exists"]);
                     }
-                    var identityId = await authenticationService.RegisterAsync(request.Email, request.Password, cancellationToken);
+                    var identityId = await _authenticationService.RegisterAsync(request.Email, request.Password, cancellationToken);
                     if (string.IsNullOrEmpty(identityId))
                     {
-                        return CommandResult<Result>.Fail(localizer["Firebase register return null"]);
+                        return CommandResult<Result>.Fail(_localizer["Firebase register return null"]);
                     }
                     var user = new User
                     {
@@ -57,15 +69,16 @@ namespace KoiCare.Application.Features.Account
                         IdentityId = identityId,
                         IsActive = true,
                     };
-                    await userRepos.AddAsync(user, cancellationToken);
-                    await unitOfWork.SaveChangesAsync(cancellationToken);
+                    await _userRepos.AddAsync(user, cancellationToken);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = localizer["User created successfully"],
+                        Message = _localizer["User created successfully"],
                     });
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, ex.Message);
                     return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
                 }
             }

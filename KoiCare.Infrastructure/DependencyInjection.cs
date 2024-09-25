@@ -3,14 +3,17 @@ using Google.Apis.Auth.OAuth2;
 using KoiCare.Application.Abtractions.Authentication;
 using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
+using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Infrastructure.Dependencies.Database;
 using KoiCare.Infrastructure.Dependencies.Firebase.Authentication;
 using KoiCare.Infrastructure.Dependencies.Localization;
+using KoiCare.Infrastructure.Dependencies.LoggedUser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace KoiCare.Infrastructure
 {
@@ -58,6 +61,10 @@ namespace KoiCare.Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ILoggedUser, LoggedUser>();
+
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
             return services;
         }
