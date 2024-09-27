@@ -2,6 +2,7 @@
 using KoiCare.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -38,7 +39,7 @@ namespace KoiCare.Infrastructure.Middleware
 
             var userId = jwtToken?.Payload?.Sub;
             var repos = context.HttpContext.RequestServices.GetService<IRepository<User>>();
-            var user = repos?.Queryable().FirstOrDefault(u => u.IdentityId == userId);
+            var user = repos?.Queryable().Include(u => u.Role).FirstOrDefault(u => u.IdentityId == userId);
             if (user == null)
             {
                 context.Result = new UnauthorizedResult();
