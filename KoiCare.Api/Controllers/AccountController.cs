@@ -62,5 +62,13 @@ namespace KoiCare.Api.Controllers
             var result = await mediator.Send(new GetUser.Query());
             return CommandResult(result);
         }
+
+        [Auth("Admin")]
+        [HttpGet("all-users")]
+        public async Task<ActionResult<GetAllUser.Result>> GetAllUsers([FromQuery] GetAllUser.Query query)
+        {
+            var result = await mediator.Send(query);
+            return CommandResult(result);
+        }
     }
 }
