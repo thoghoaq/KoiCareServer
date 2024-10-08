@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using KoiCare.Application.Abtractions.LoggedUser;
 
-namespace KoiCare.Application.Features.Blogs
+namespace KoiCare.Application.Features.Blog
 {
     public class GetBlogById
     {

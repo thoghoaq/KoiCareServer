@@ -6,6 +6,7 @@ namespace KoiCare.Infrastructure.Dependencies.Database
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Gender> Genders { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -34,6 +35,10 @@ namespace KoiCare.Infrastructure.Dependencies.Database
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Gender)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.GenderId);
 
             modelBuilder.Entity<Role>(entity =>
             {
@@ -43,6 +48,16 @@ namespace KoiCare.Infrastructure.Dependencies.Database
                 .HasData(
                 new Role { Id = 1, Name = "Admin" },
                 new Role { Id = 2, Name = "User" }
+                );
+
+            modelBuilder.Entity<Gender>(entity =>
+            {
+                entity.Property(e => e.Name).HasMaxLength(32).IsRequired();
+            });
+            modelBuilder.Entity<Gender>()
+                .HasData(
+                new Gender { Id = 1, Name = "Male" },
+                new Gender { Id = 2, Name = "Female" }
                 );
 
             modelBuilder.Entity<Category>(entity =>

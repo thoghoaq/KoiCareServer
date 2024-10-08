@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace KoiCare.Application.Features.Blogs
+namespace KoiCare.Application.Features.Blog
 {
     public class GetAllBlog
     {
