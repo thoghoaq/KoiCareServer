@@ -70,5 +70,41 @@ namespace KoiCare.Api.Controllers
             var result = await mediator.Send(query);
             return CommandResult(result);
         }
+
+        [Auth]
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult<UpdateUser.Result>> UpdateUser(int id, [FromBody] UpdateUser.Command command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("ID mismatch");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
+
+        [Auth("Admin")]
+        [HttpPut("disable/{id}")]
+        public async Task<ActionResult<DisableUser.Result>> DisableUser(int id, [FromBody] DisableUser.Command command)
+        {
+            if (id != command.Id)
+            {
+                return BadRequest("ID mismatch");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
     }
 }

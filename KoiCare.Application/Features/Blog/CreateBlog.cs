@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace KoiCare.Application.Features.Blogs
+namespace KoiCare.Application.Features.Blog
 {
     public class CreateBlog
     {

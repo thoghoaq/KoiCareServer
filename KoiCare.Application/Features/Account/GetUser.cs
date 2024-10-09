@@ -17,6 +17,7 @@ namespace KoiCare.Application.Features.Account
         {
             public int? Id { get; set; }
             public string? Email { get; set; }
+            public string? PhoneNumber { get; set; }
         }
 
         public class Result
@@ -28,15 +29,18 @@ namespace KoiCare.Application.Features.Account
             public string RoleName { get; set; } = string.Empty;
             public bool IsActive { get; set; }
             public bool IsAdmin => RoleId == (int)ERole.Admin;
+            public DateTime? DateOfBirth { get; set; }
+            public string? PhoneNumber { get; set; }
+            public EGender? GenderId { get; set; }
         }
 
         public class Handler(
-            IRepository<User> userRepos,
-            IAppLocalizer localizer,
-            ILogger<GetUser> logger,
-            ILoggedUser loggedUser,
-            IUnitOfWork unitOfWork
-            ) : BaseRequestHandler<Query, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+    IRepository<User> userRepos,
+    IAppLocalizer localizer,
+    ILogger<GetUser> logger,
+    ILoggedUser loggedUser,
+    IUnitOfWork unitOfWork
+    ) : BaseRequestHandler<Query, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
         {
             private readonly IRepository<User> _userRepos = userRepos;
 
@@ -48,6 +52,7 @@ namespace KoiCare.Application.Features.Account
                     var user = await _userRepos.Queryable()
                         .Include(u => u.Role)
                         .FirstOrDefaultAsync(x => request.Id.HasValue ? x.Id == request.Id : x.Email == email, cancellationToken);
+
                     if (user == null)
                     {
                         return CommandResult<Result>.Fail(_localizer["User not found"]);
@@ -65,7 +70,10 @@ namespace KoiCare.Application.Features.Account
                         Username = user.Username,
                         RoleId = user.RoleId,
                         RoleName = user.Role.Name,
-                        IsActive = user.IsActive
+                        IsActive = user.IsActive,
+                        DateOfBirth = user.DateOfBirth,
+                        PhoneNumber = user.PhoneNumber,
+                        GenderId = (EGender?)user.GenderId
                     });
                 }
                 catch (Exception ex)

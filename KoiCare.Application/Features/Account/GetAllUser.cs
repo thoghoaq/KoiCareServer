@@ -34,6 +34,9 @@ namespace KoiCare.Application.Features.Account
             public required string Email { get; set; }
             public required string IdentityId { get; set; }
             public bool IsActive { get; set; }
+            public DateTime? DateOfBirth { get; set; }
+            public string? PhoneNumber { get; set; }
+            public EGender? GenderId { get; set; }
         }
 
         public class Handler(
@@ -58,7 +61,10 @@ namespace KoiCare.Application.Features.Account
                         RoleId = x.RoleId,
                         RoleName = x.Role.Name,
                         IdentityId = x.IdentityId,
-                        IsActive = x.IsActive
+                        IsActive = x.IsActive,
+                        DateOfBirth = x.DateOfBirth,
+                        PhoneNumber = x.PhoneNumber,
+                        GenderId = (EGender?)x.GenderId
                     });
 
                 if (request.PageNumber.HasValue && request.PageSize.HasValue)
