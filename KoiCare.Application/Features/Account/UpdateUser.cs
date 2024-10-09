@@ -66,7 +66,10 @@ namespace KoiCare.Application.Features.Account
                     ? DateTime.SpecifyKind(request.DateOfBirth.Value, DateTimeKind.Utc)
                     : (DateTime?)null;
 
-                user.PhoneNumber = request.PhoneNumber;
+                if (!string.IsNullOrEmpty(request.PhoneNumber))
+                {
+                    user.PhoneNumber = request.PhoneNumber;
+                }
 
                 if (request.GenderId.HasValue)
                 {
