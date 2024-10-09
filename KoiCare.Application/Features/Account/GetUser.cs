@@ -31,7 +31,7 @@ namespace KoiCare.Application.Features.Account
             public bool IsAdmin => RoleId == (int)ERole.Admin;
             public DateTime? DateOfBirth { get; set; }
             public string? PhoneNumber { get; set; }
-            public int? GenderId { get; set; }
+            public EGender? GenderId { get; set; }
         }
 
         public class Handler(
@@ -73,7 +73,7 @@ namespace KoiCare.Application.Features.Account
                         IsActive = user.IsActive,
                         DateOfBirth = user.DateOfBirth,
                         PhoneNumber = user.PhoneNumber,
-                        GenderId = user.GenderId
+                        GenderId = (EGender?)user.GenderId
                     });
                 }
                 catch (Exception ex)

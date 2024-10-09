@@ -13,9 +13,5 @@ namespace KoiCare.Domain.Entities
 
         public virtual ICollection<User> Users { get; set; } = [];
 
-        public static explicit operator int(Gender v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

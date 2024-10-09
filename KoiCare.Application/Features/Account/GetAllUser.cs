@@ -36,7 +36,7 @@ namespace KoiCare.Application.Features.Account
             public bool IsActive { get; set; }
             public DateTime? DateOfBirth { get; set; }
             public string? PhoneNumber { get; set; }
-            public int? GenderId { get; set; }
+            public EGender? GenderId { get; set; }
         }
 
         public class Handler(
@@ -64,7 +64,7 @@ namespace KoiCare.Application.Features.Account
                         IsActive = x.IsActive,
                         DateOfBirth = x.DateOfBirth,
                         PhoneNumber = x.PhoneNumber,
-                        GenderId = x.GenderId
+                        GenderId = (EGender?)x.GenderId
                     });
 
                 if (request.PageNumber.HasValue && request.PageSize.HasValue)

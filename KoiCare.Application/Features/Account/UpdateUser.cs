@@ -20,7 +20,7 @@ namespace KoiCare.Application.Features.Account
 
             public DateTime? DateOfBirth { get; set; }
             public string? PhoneNumber { get; set; }
-            public EGender? Gender { get; set; }
+            public EGender? GenderId { get; set; }
         }
 
 
@@ -56,13 +56,9 @@ namespace KoiCare.Application.Features.Account
                 }
 
                 // Only admin can update RoleId, default to 'User' role if not admin
-                if (currentUserRole != (int)ERole.Admin)
+                if (currentUserRole == (int)ERole.Admin && request.RoleId.HasValue)
                 {
-                    user.RoleId = (int)ERole.User; // Default roleId to 'User' (2)
-                }
-                else if (request.RoleId.HasValue)
-                {
-                    user.RoleId = (int)request.RoleId.Value; // Admin can set RoleId
+                    user.RoleId = (int)request.RoleId.Value;
                 }
 
                 user.Username = request.Username;
@@ -72,9 +68,9 @@ namespace KoiCare.Application.Features.Account
 
                 user.PhoneNumber = request.PhoneNumber;
 
-                if (request.Gender.HasValue)
+                if (request.GenderId.HasValue)
                 {
-                    user.GenderId = (int)request.Gender.Value; 
+                    user.GenderId = (int)request.GenderId.Value; 
                 }
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
