@@ -124,4 +124,55 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="Error in validation" xml:space="preserve">
+    <value>Lỗi xác thực dữ liệu</value>
+  </data>
+  <data name="Pond not found" xml:space="preserve">
+    <value>Không tìm thấy hồ</value>
+  </data>
+  <data name="You are not allowed to update this pond" xml:space="preserve">
+    <value>Bạn không có quyền để cập nhật hồ này</value>
+  </data>
+  <data name="Pond saved successfully" xml:space="preserve">
+    <value>Lưu thông tin hồ thành công</value>
+  </data>
+  <data name="Name is required" xml:space="preserve">
+    <value>Tên là bắt buộc</value>
+  </data>
+  <data name="Length is required" xml:space="preserve">
+    <value>Chiều dài là bắt buộc</value>
+  </data>
+  <data name="Length is greater than 0" xml:space="preserve">
+    <value>Chiều dài lớn hơn 0</value>
+  </data>
+  <data name="Width is required" xml:space="preserve">
+    <value>Chiều rộng là bắt buộc</value>
+  </data>
+  <data name="Width is greater than 0" xml:space="preserve">
+    <value>Chiều rộng lớn hơn 0</value>
+  </data>
+  <data name="Depth is required" xml:space="preserve">
+    <value>Độ sâu là bắt buộc</value>
+  </data>
+  <data name="Depth is greater than 0" xml:space="preserve">
+    <value>Độ sâu lớn hơn 0</value>
+  </data>
+  <data name="Volume is required" xml:space="preserve">
+    <value>Khối lượng là bắt buộc</value>
+  </data>
+  <data name="Volume is greater than 0" xml:space="preserve">
+    <value>Khối lượng lớn hơn 0</value>
+  </data>
+  <data name="Drainage count is required" xml:space="preserve">
+    <value>Số lượng thoát nước là bắt buộc</value>
+  </data>
+  <data name="Drainage count is greater than 0" xml:space="preserve">
+    <value>Số lượng thoát nước lớn hơn 0</value>
+  </data>
+  <data name="Pump capacity is required" xml:space="preserve">
+    <value>Bắt buộc phải có công suất máy bơm</value>
+  </data>
+  <data name="Pump capacity is greater than 0" xml:space="preserve">
+    <value>Công suất bơm lớn hơn 0</value>
+  </data>
 </root>
