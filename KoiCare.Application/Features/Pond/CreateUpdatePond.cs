@@ -27,30 +27,62 @@ namespace KoiCare.Application.Features.Pond
 
         public class CreateCommandValidator : AbstractValidator<Command>
         {
-            public CreateCommandValidator()
+            public CreateCommandValidator(IAppLocalizer localizer)
             {
-                RuleFor(x => x.Name).NotNull().NotEmpty();
-                RuleFor(x => x.Length).NotNull().NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Width).NotNull().NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Depth).NotNull().NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Volume).NotNull().NotEmpty().GreaterThan(0);
-                RuleFor(x => x.DrainageCount).NotNull().NotEmpty().GreaterThan(0);
-                RuleFor(x => x.PumpCapacity).NotNull().NotEmpty().GreaterThan(0);
+                RuleFor(x => x.Name)
+                    .NotNull().WithMessage(localizer["Name is required"])
+                    .NotEmpty().WithMessage(localizer["Name is required"]);
+                RuleFor(x => x.Length)
+                    .NotNull().WithMessage(localizer["Length is required"])
+                    .NotEmpty().WithMessage(localizer["Length is required"])
+                    .GreaterThan(0).WithMessage(localizer["Length is greater than 0"]);
+                RuleFor(x => x.Width)
+                    .NotNull().WithMessage(localizer["Width is required"])
+                    .NotEmpty().WithMessage(localizer["Width is required"])
+                    .GreaterThan(0).WithMessage(localizer["Width is greater than 0"]);
+                RuleFor(x => x.Depth)
+                    .NotNull().WithMessage(localizer["Depth is required"])
+                    .NotEmpty().WithMessage(localizer["Depth is required"])
+                    .GreaterThan(0).WithMessage(localizer["Depth is greater than 0"]);
+                RuleFor(x => x.Volume)
+                    .NotNull().WithMessage(localizer["Volume is required"])
+                    .NotEmpty().WithMessage(localizer["Volume is required"])
+                    .GreaterThan(0).WithMessage(localizer["Volume is greater than 0"]);
+                RuleFor(x => x.DrainageCount)
+                    .NotNull().WithMessage(localizer["Drainage count is required"])
+                    .NotEmpty().WithMessage(localizer["Drainage count is required"])
+                    .GreaterThan(0).WithMessage(localizer["Drainage count is greater than 0"]);
+                RuleFor(x => x.PumpCapacity)
+                    .NotNull().WithMessage(localizer["Pump capacity is required"])
+                    .NotEmpty().WithMessage(localizer["Pump capacity is required"])
+                    .GreaterThan(0).WithMessage(localizer["Pump capacity is greater than 0"]);
             }
         }
 
         public class UpdateCommandValidator : AbstractValidator<Command>
         {
-            public UpdateCommandValidator()
+            public UpdateCommandValidator(IAppLocalizer localizer)
             {
-                RuleFor(x => x.Id).NotEmpty();
-                RuleFor(x => x.Name).NotEmpty();
-                RuleFor(x => x.Length).NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Width).NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Depth).NotEmpty().GreaterThan(0);
-                RuleFor(x => x.Volume).NotEmpty().GreaterThan(0);
-                RuleFor(x => x.DrainageCount).NotEmpty().GreaterThan(0);
-                RuleFor(x => x.PumpCapacity).NotEmpty().GreaterThan(0);
+                RuleFor(x => x.Id).NotEmpty().WithMessage(localizer["Id is required"]);
+                RuleFor(x => x.Name).NotEmpty().WithMessage(localizer["Name is required"]);
+                RuleFor(x => x.Length)
+                    .NotEmpty().WithMessage(localizer["Length is required"])
+                    .GreaterThan(0).WithMessage(localizer["Length is greater than 0"]);
+                RuleFor(x => x.Width)
+                    .NotEmpty().WithMessage(localizer["Width is required"])
+                    .GreaterThan(0).WithMessage(localizer["Width is greater than 0"]);
+                RuleFor(x => x.Depth)
+                    .NotEmpty().WithMessage(localizer["Depth is required"])
+                    .GreaterThan(0).WithMessage(localizer["Depth is greater than 0"]);
+                RuleFor(x => x.Volume)
+                    .NotEmpty().WithMessage(localizer["Volume is required"])
+                    .GreaterThan(0).WithMessage(localizer["Volume is greater than 0"]);
+                RuleFor(x => x.DrainageCount)
+                    .NotEmpty().WithMessage(localizer["Drainage count is required"])
+                    .GreaterThan(0).WithMessage(localizer["Drainage count is greater than 0"]);
+                RuleFor(x => x.PumpCapacity)
+                    .NotEmpty().WithMessage(localizer["Pump capacity is required"])
+                    .GreaterThan(0).WithMessage(localizer["Pump capacity is greater than 0"]);
             }
         }
 
@@ -76,7 +108,7 @@ namespace KoiCare.Application.Features.Pond
                     if (request.Id.HasValue)
                     {
                         // Update
-                        var validator = new UpdateCommandValidator();
+                        var validator = new UpdateCommandValidator(localizer);
                         var validationResult = await validator.ValidateAsync(request, cancellationToken);
                         if (!validationResult.IsValid)
                         {
@@ -107,7 +139,7 @@ namespace KoiCare.Application.Features.Pond
                     else
                     {
                         // Create
-                        var validator = new CreateCommandValidator();
+                        var validator = new CreateCommandValidator(localizer);
                         var validationResult = await validator.ValidateAsync(request, cancellationToken);
                         if (!validationResult.IsValid)
                         {
