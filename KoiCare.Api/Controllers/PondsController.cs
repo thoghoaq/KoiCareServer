@@ -37,5 +37,14 @@ namespace KoiCare.Api.Controllers
             var result = await mediator.Send(command);
             return CommandResult(result);
         }
+
+        [Auth]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetPondDetail.Result>> GetPond([FromRoute] int id)
+        {
+            var query = new GetPondDetail.Query { Id = id };
+            var result = await mediator.Send(query);
+            return CommandResult(result);
+        }
     }
 }

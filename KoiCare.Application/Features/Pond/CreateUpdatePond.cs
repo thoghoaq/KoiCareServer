@@ -118,7 +118,7 @@ namespace KoiCare.Application.Features.Pond
                         var pond = await pondRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                         if (pond == null)
                         {
-                            return CommandResult<Result>.Fail(_localizer["Pond not found"]);
+                            return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Pond not found"]);
                         }
                         if (pond.OwnerId != ownerId)
                         {
