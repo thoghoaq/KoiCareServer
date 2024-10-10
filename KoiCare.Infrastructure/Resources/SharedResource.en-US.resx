@@ -124,4 +124,16 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="Error in validation" xml:space="preserve">
+    <value>Error in validation</value>
+  </data>
+  <data name="Pond not found" xml:space="preserve">
+    <value>Pond not found</value>
+  </data>
+  <data name="You are not allowed to update this pond" xml:space="preserve">
+    <value>You are not allowed to update this pond</value>
+  </data>
+  <data name="Pond saved successfully" xml:space="preserve">
+    <value>Pond saved successfully</value>
+  </data>
 </root>

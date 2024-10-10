@@ -9,11 +9,32 @@ namespace KoiCare.Api.Controllers
     [Route("api/[controller]")]
     public class PondsController(IMediator mediator) : BaseController
     {
+        /// <summary>
+        /// Get list ponds of the logged user, if admin get all ponds
+        /// </summary>
+        /// <returns></returns>
         [Auth]
         [HttpGet]
         public async Task<ActionResult<GetListPonds.Result>> GetListPonds()
         {
             var result = await mediator.Send(new GetListPonds.Query());
+            return CommandResult(result);
+        }
+
+        /// <summary>
+        /// Create or update pond, remove id to create new pond
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [Auth]
+        [HttpPost("save")]
+        public async Task<ActionResult<CreateUpdatePond.Result>> CreateUpdatePond([FromBody] CreateUpdatePond.Command command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await mediator.Send(command);
             return CommandResult(result);
         }
     }

@@ -124,4 +124,16 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="Error in validation" xml:space="preserve">
+    <value>Lỗi xác thực dữ liệu</value>
+  </data>
+  <data name="Pond not found" xml:space="preserve">
+    <value>Không tìm thấy hồ</value>
+  </data>
+  <data name="You are not allowed to update this pond" xml:space="preserve">
+    <value>Bạn không có quyền để cập nhật hồ này</value>
+  </data>
+  <data name="Pond saved successfully" xml:space="preserve">
+    <value>Lưu thông tin hồ thành công</value>
+  </data>
 </root>
