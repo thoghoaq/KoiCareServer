@@ -19,20 +19,12 @@ namespace KoiCare.Application.Features.Account
         {
             [EmailAddress]
             public required string Email { get; set; }
-
             [MinLength(8)]
             public required string Password { get; set; }
-
-            [MinLength(8)]
-            [Compare("Password", ErrorMessage = "Password and Confirm Password do not match.")]
-            public required string ConfirmPassword { get; set; }
-
             [MaxLength(255)]
             public required string Username { get; set; }
-            public ERole RoleId { get; set; } = ERole.User; // Default to User
+            public required ERole RoleId { get; set; }
         }
-
-
 
         public class Result
         {
@@ -55,35 +47,30 @@ namespace KoiCare.Application.Features.Account
             {
                 try
                 {
-                    if (request.Password != request.ConfirmPassword)
+                    if (request.RoleId == ERole.Admin)
                     {
-                        return CommandResult<Result>.Fail(_localizer["Password and Confirm Password do not match"]);
+                        return CommandResult<Result>.Fail(_localizer["Cannot create admin user"]);
                     }
-
                     var existedUser = await _userRepos.Queryable().FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
                     if (existedUser != null)
                     {
                         return CommandResult<Result>.Fail(_localizer["Email already exists"]);
                     }
-
                     var identityId = await _authenticationService.RegisterAsync(request.Email, request.Password, cancellationToken);
                     if (string.IsNullOrEmpty(identityId))
                     {
                         return CommandResult<Result>.Fail(_localizer["Firebase register return null"]);
                     }
-
                     var user = new User
                     {
                         Email = request.Email,
                         Username = request.Username,
-                        RoleId = (int)request.RoleId, // Luôn mặc định là User
+                        RoleId = (int)request.RoleId,
                         IdentityId = identityId,
                         IsActive = true,
                     };
-
                     await _userRepos.AddAsync(user, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
-
                     return CommandResult<Result>.Success(new Result
                     {
                         Message = _localizer["User created successfully"],
@@ -95,8 +82,6 @@ namespace KoiCare.Application.Features.Account
                     return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
                 }
             }
-
-
         }
     }
 }

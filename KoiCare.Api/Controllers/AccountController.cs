@@ -31,18 +31,6 @@ namespace KoiCare.Api.Controllers
             return CommandResult(result);
         }
 
-        [HttpPost("forgot-password")]
-        public async Task<ActionResult<ForgotPassword.Result>> ForgotPassword([FromBody] ForgotPassword.Command command)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var result = await mediator.Send(command);
-            return CommandResult(result);
-        }
-
-
         [Auth]
         [HttpGet("user")]
         public async Task<ActionResult<GetUser.Result>> GetUser([FromQuery] GetUser.Query query)
