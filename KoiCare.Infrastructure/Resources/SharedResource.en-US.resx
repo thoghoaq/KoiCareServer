@@ -124,4 +124,55 @@
   <data name="Unauthorized" xml:space="preserve">
     <value>Unauthorized</value>
   </data>
+  <data name="Error in validation" xml:space="preserve">
+    <value>Error in validation</value>
+  </data>
+  <data name="Pond not found" xml:space="preserve">
+    <value>Pond not found</value>
+  </data>
+  <data name="You are not allowed to update this pond" xml:space="preserve">
+    <value>You are not allowed to update this pond</value>
+  </data>
+  <data name="Pond saved successfully" xml:space="preserve">
+    <value>Pond saved successfully</value>
+  </data>
+  <data name="Name is required" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="Length is required" xml:space="preserve">
+    <value>Length is required</value>
+  </data>
+  <data name="Length is greater than 0" xml:space="preserve">
+    <value>Length is greater than 0</value>
+  </data>
+  <data name="Width is required" xml:space="preserve">
+    <value>Width is required</value>
+  </data>
+  <data name="Width is greater than 0" xml:space="preserve">
+    <value>Width is greater than 0</value>
+  </data>
+  <data name="Depth is required" xml:space="preserve">
+    <value>Depth is required</value>
+  </data>
+  <data name="Depth is greater than 0" xml:space="preserve">
+    <value>Depth is greater than 0</value>
+  </data>
+  <data name="Volume is required" xml:space="preserve">
+    <value>Volume is required</value>
+  </data>
+  <data name="Volume is greater than 0" xml:space="preserve">
+    <value>Volume is greater than 0</value>
+  </data>
+  <data name="Drainage count is required" xml:space="preserve">
+    <value>Drainage count is required</value>
+  </data>
+  <data name="Drainage count is greater than 0" xml:space="preserve">
+    <value>Drainage count is greater than 0</value>
+  </data>
+  <data name="Pump capacity is required" xml:space="preserve">
+    <value>Pump capacity is required</value>
+  </data>
+  <data name="Pump capacity is greater than 0" xml:space="preserve">
+    <value>Pump capacity is greater than 0</value>
+  </data>
 </root>
