@@ -1,5 +1,7 @@
 ﻿using FirebaseAdmin.Auth;
 using KoiCare.Application.Abtractions.Authentication;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace KoiCare.Infrastructure.Dependencies.Firebase.Authentication
 {
@@ -22,6 +24,7 @@ namespace KoiCare.Infrastructure.Dependencies.Firebase.Authentication
 
         public async Task<string> GeneratePasswordResetLinkAsync(string email)
         {
+            // Gửi link reset mật khẩu đến email người dùng
             return await FirebaseAuth.DefaultInstance.GeneratePasswordResetLinkAsync(email);
         }
     }
