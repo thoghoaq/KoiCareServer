@@ -1,4 +1,5 @@
 ﻿using KoiCare.Application.Abtractions.Authentication;
+using KoiCare.Application.Abtractions.Configuration; // Thêm dòng này
 using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Email;
 using KoiCare.Application.Abtractions.Localization;
@@ -7,6 +8,7 @@ using KoiCare.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options; // Thêm dòng này
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
@@ -26,68 +28,71 @@ namespace KoiCare.Application.Features.Account
         {
             public string? Message { get; set; }
         }
+    }
 
-        public class Handler : IRequestHandler<Command, CommandResult<Result>>
+    public class ForgotPasswordHandler : IRequestHandler<ForgotPassword.Command, CommandResult<ForgotPassword.Result>>
+    {
+        private readonly IRepository<User> _userRepos;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IEmailService _emailService;
+        private readonly IAppLocalizer _localizer;
+        private readonly ILogger<ForgotPasswordHandler> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UrlsSettings _urlsSettings; // Thêm dòng này
+
+        public ForgotPasswordHandler(
+            IRepository<User> userRepos,
+            IAuthenticationService authenticationService,
+            IEmailService emailService,
+            IAppLocalizer localizer,
+            ILogger<ForgotPasswordHandler> logger,
+            IUnitOfWork unitOfWork,
+            IOptions<UrlsSettings> urlsSettings) // Thêm dòng này
         {
-            private readonly IRepository<User> _userRepos;
-            private readonly IAuthenticationService _authenticationService;
-            private readonly IEmailService _emailService;
-            private readonly IAppLocalizer _localizer;
-            private readonly ILogger<ForgotPassword> _logger;
-            private readonly IUnitOfWork _unitOfWork;
+            _userRepos = userRepos;
+            _authenticationService = authenticationService;
+            _emailService = emailService;
+            _localizer = localizer;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
+            _urlsSettings = urlsSettings.Value; // Thêm dòng này
+        }
 
-            public Handler(
-                IRepository<User> userRepos,
-                IAuthenticationService authenticationService,
-                IEmailService emailService,
-                IAppLocalizer localizer,
-                ILogger<ForgotPassword> logger,
-                IUnitOfWork unitOfWork)
+        public async Task<CommandResult<ForgotPassword.Result>> Handle(ForgotPassword.Command request, CancellationToken cancellationToken)
+        {
+            var user = await _userRepos.Queryable().FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+
+            if (user == null)
             {
-                _userRepos = userRepos;
-                _authenticationService = authenticationService;
-                _emailService = emailService;
-                _localizer = localizer;
-                _logger = logger;
-                _unitOfWork = unitOfWork;
+                return CommandResult<ForgotPassword.Result>.Fail(_localizer["User not found"]);
             }
 
-            public async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
+            try
             {
-                var user = await _userRepos.Queryable().FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+                // Tạo link reset mật khẩu sử dụng Firebase
+                var resetLink = await _authenticationService.GeneratePasswordResetLinkAsync(user.Email);
 
-                if (user == null)
+                // Tạo URL reset mật khẩu sử dụng cấu hình từ appsettings.json
+                var resetUrl = $"{_urlsSettings.FrontendBaseUrl}/reset-password?link={Uri.EscapeDataString(resetLink)}";
+
+                // Gửi email chứa đường dẫn reset mật khẩu
+                var emailResult = await _emailService.SendEmailAsync(user.Email, "Reset your password",
+                    $"Please reset your password by clicking <a href='{resetUrl}'>here</a>.");
+
+                if (!emailResult)
                 {
-                    return CommandResult<Result>.Fail(_localizer["User not found"]);
+                    return CommandResult<ForgotPassword.Result>.Fail(_localizer["Failed to send email"]);
                 }
 
-                try
+                return CommandResult<ForgotPassword.Result>.Success(new ForgotPassword.Result
                 {
-                    // Tạo link reset mật khẩu sử dụng Firebase
-                    var resetLink = await _authenticationService.GeneratePasswordResetLinkAsync(user.Email);
-
-                    // Tạo URL reset mật khẩu (có thể tùy chỉnh URL frontend của bạn)
-                    var resetUrl = $"https://yourfrontend.com/reset-password?link={Uri.EscapeDataString(resetLink)}";
-
-                    // Gửi email chứa đường dẫn reset mật khẩu
-                    var emailResult = await _emailService.SendEmailAsync(user.Email, "Reset your password",
-                        $"Please reset your password by clicking <a href='{resetUrl}'>here</a>.");
-
-                    if (!emailResult)
-                    {
-                        return CommandResult<Result>.Fail(_localizer["Failed to send email"]);
-                    }
-
-                    return CommandResult<Result>.Success(new Result
-                    {
-                        Message = _localizer["Password reset link has been sent to your email"]
-                    });
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error while handling ForgotPassword");
-                    return CommandResult<Result>.Fail(_localizer["An error occurred while processing your request"]);
-                }
+                    Message = _localizer["Password reset link has been sent to your email"]
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while handling ForgotPassword");
+                return CommandResult<ForgotPassword.Result>.Fail(_localizer["An error occurred while processing your request"]);
             }
         }
     }

@@ -1,10 +1,12 @@
 ﻿using KoiCare.Application.Features.Account;
 using KoiCare.Application.Abtractions.Authentication;
 using KoiCare.Infrastructure;
+using KoiCare.Infrastructure.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
+using KoiCare.Application.Abtractions.Configuration;
 
 var allowSpecificOrigins = "_koiCareAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -70,7 +72,9 @@ builder.Services.AddControllers();
 
 // Add Swagger/OpenAPI services (đã được cấu hình ở trên, không cần thêm lại)
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen(); // Không cần gọi lại nếu đã gọi ở trên
+
+// UrlsSettings
+builder.Services.Configure<UrlsSettings>(builder.Configuration.GetSection("Urls"));
 
 var app = builder.Build();
 
