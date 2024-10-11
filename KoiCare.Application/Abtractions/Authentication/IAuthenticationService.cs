@@ -1,4 +1,7 @@
-﻿namespace KoiCare.Application.Abtractions.Authentication
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace KoiCare.Application.Abtractions.Authentication
 {
     public interface IAuthenticationService
     {
