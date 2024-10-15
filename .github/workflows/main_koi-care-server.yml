@@ -38,6 +38,9 @@ jobs:
           Authentication.RefreshUri: ${{ secrets.AUTHENTICATION_REFRESH_URI }}
           Authentication.Audience: ${{ secrets.AUTHENTICATION_AUDIENCE }}
           Authentication.ValidIssuer: ${{ secrets.AUTHENTICATION_VALID_ISSUER }}
+          Email.SmtpSettings.UserName: ${{ secrets.EMAIL_SMTP_SETTINGS_USERNAME }}
+          Email.SmtpSettings.Password: ${{ secrets.EMAIL_SMTP_SETTINGS_PASSWORD }}
+          Email.SmtpSettings.FromEmail: ${{ secrets.EMAIL_SMTP_SETTINGS_FROMEMAIL }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
