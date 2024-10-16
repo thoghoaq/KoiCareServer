@@ -57,14 +57,5 @@ namespace KoiCare.Api.Controllers
             var result = await mediator.Send(command);
             return CommandResult(result);
         }
-
-        [Auth("Admin")]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<DeleteProduct.Result>> DeleteProduct(int id)
-        {
-            var command = new DeleteProduct.Command { Id = id };
-            var result = await mediator.Send(command);
-            return CommandResult(result);
-        }
     }
 }

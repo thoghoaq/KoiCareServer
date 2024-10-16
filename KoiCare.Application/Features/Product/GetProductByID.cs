@@ -17,7 +17,7 @@ namespace KoiCare.Application.Features.Product
             public string Description { get; set; } = string.Empty;
             public decimal Price { get; set; } = decimal.Zero;
             public string ImageUrl { get; set; }
-            public string Category { get; set; }
+            public string CategoryName { get; set; }
         }
 
         public class Query : IRequest<CommandResult<Result>>
@@ -51,7 +51,7 @@ namespace KoiCare.Application.Features.Product
                     Description = product.Description,
                     Price = product.Price,
                     ImageUrl = product.ImageUrl,
-                    Category = product.Category.Name,
+                    CategoryName = product.Category.Name,
                 };
 
                 return CommandResult<Result>.Success(result);

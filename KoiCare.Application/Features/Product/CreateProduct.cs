@@ -37,30 +37,24 @@ namespace KoiCare.Application.Features.Product
             {
                 try
                 {
-                    // Kiểm tra nếu người dùng đã đăng nhập
-                    if (_loggedUser.UserId != null)
+                    // Tạo Product mới
+                    var product = new Domain.Entities.Product()
                     {
-                        // Tạo Product mới
-                        var product = new Domain.Entities.Product()
-                        {
-                            Name = request.Name,
-                            Description = request.Description,
-                            Price = request.Price,
-                            ImageUrl = request.ImageUrl,
-                            CategoryId = request.CategoryId
-                        };
+                        Name = request.Name,
+                        Description = request.Description,
+                        Price = request.Price,
+                        ImageUrl = request.ImageUrl,
+                        CategoryId = request.CategoryId
+                    };
 
-                        // Thêm Product vào cơ sở dữ liệu
-                        await _productRepos.AddAsync(product, cancellationToken);
-                        await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    // Thêm Product vào cơ sở dữ liệu
+                    await _productRepos.AddAsync(product, cancellationToken);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                        return CommandResult<Result>.Success(new Result
-                        {
-                            Message = _localizer["Product created successfully"],
-                        });
-                    }
-
-                    return CommandResult<Result>.Fail(_localizer["User must be logged in to create a product"]);
+                    return CommandResult<Result>.Success(new Result
+                    {
+                        Message = _localizer["Product created successfully"],
+                    });
                 }
                 catch (Exception ex)
                 {

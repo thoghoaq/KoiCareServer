@@ -41,7 +41,6 @@ namespace KoiCare.Application.Features.Category
             public override Task<CommandResult<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query = cateRepos.Queryable()
-                    .Include(x => x.Products) // Assuming there's an Product relationship
                     .Where(x => request.Search == null || x.Name.Contains(request.Search!))
                     .Select(x => new CategoryResult
                     {

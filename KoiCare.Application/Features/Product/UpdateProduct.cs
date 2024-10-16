@@ -18,12 +18,12 @@ namespace KoiCare.Application.Features.Product
 
         public class Command : IRequest<CommandResult<Result>>
         {
-            public required int Id { get; set; }
-            public required string Name { get; set; }
-            public required string Description { get; set; }
-            public required decimal Price { get; set; }
-            public required string ImageUrl { get; set; }
-            public required int CategoryId { get; set; }
+            public int? Id { get; set; }
+            public string? Name { get; set; }
+            public string? Description { get; set; }
+            public decimal? Price { get; set; }
+            public string? ImageUrl { get; set; }
+            public int? CategoryId { get; set; }
         }
 
         public class Handler(
@@ -45,11 +45,11 @@ namespace KoiCare.Application.Features.Product
                         return CommandResult<Result>.Fail(_localizer["Product not found"]);
                     }
                     //Update Product
-                    product.Name = request.Name;
-                    product.Description = request.Description;
-                    product.Price = request.Price;
-                    product.ImageUrl = request.ImageUrl;
-                    product.CategoryId = request.CategoryId;
+                    if (request.Name != null) product.Name = request.Name;
+                    if (request.Description != null) product.Description = request.Description;
+                    if (request.Price != null) product.Price = request.Price.Value;
+                    if (request.ImageUrl != null) product.ImageUrl = request.ImageUrl;
+                    if (request.CategoryId != null) product.CategoryId = request.CategoryId.Value;
 
                     productRepos.Update(product);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
