@@ -38,7 +38,7 @@ namespace KoiCare.Application.Features.Account
         private readonly IAppLocalizer _localizer;
         private readonly ILogger<ForgotPasswordHandler> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UrlsSettings _urlsSettings; // Thêm dòng này
+        private readonly UrlsSettings _urlsSettings;
 
         public ForgotPasswordHandler(
             IRepository<User> userRepos,
@@ -47,7 +47,7 @@ namespace KoiCare.Application.Features.Account
             IAppLocalizer localizer,
             ILogger<ForgotPasswordHandler> logger,
             IUnitOfWork unitOfWork,
-            IOptions<UrlsSettings> urlsSettings) // Thêm dòng này
+            IOptions<UrlsSettings> urlsSettings) 
         {
             _userRepos = userRepos;
             _authenticationService = authenticationService;
@@ -55,7 +55,7 @@ namespace KoiCare.Application.Features.Account
             _localizer = localizer;
             _logger = logger;
             _unitOfWork = unitOfWork;
-            _urlsSettings = urlsSettings.Value; // Thêm dòng này
+            _urlsSettings = urlsSettings.Value; 
         }
 
         public async Task<CommandResult<ForgotPassword.Result>> Handle(ForgotPassword.Command request, CancellationToken cancellationToken)
@@ -71,13 +71,9 @@ namespace KoiCare.Application.Features.Account
             {
                 // Tạo link reset mật khẩu sử dụng Firebase
                 var resetLink = await _authenticationService.GeneratePasswordResetLinkAsync(user.Email);
-
-                // Tạo URL reset mật khẩu sử dụng cấu hình từ appsettings.json
-                var resetUrl = $"{_urlsSettings.FrontendBaseUrl}/reset-password?link={Uri.EscapeDataString(resetLink)}";
-
                 // Gửi email chứa đường dẫn reset mật khẩu
                 var emailResult = await _emailService.SendEmailAsync(user.Email, "Reset your password",
-                    $"Please reset your password by clicking <a href='{resetUrl}'>here</a>.");
+                    $"Please reset your password by clicking <a href='{resetLink}'>here</a>.");
 
                 if (!emailResult)
                 {
