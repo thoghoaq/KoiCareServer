@@ -29,7 +29,7 @@ namespace KoiCare.Application.Features.Product
            ILogger<CreateProduct> logger,
            ILoggedUser loggedUser,
            IUnitOfWork unitOfWork
-       ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+        ): BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
         {
             private readonly IRepository<Domain.Entities.Product> _productRepos = productRepos;
 
