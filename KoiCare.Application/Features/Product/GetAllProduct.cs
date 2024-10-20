@@ -2,7 +2,7 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Category;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -35,7 +35,7 @@ namespace KoiCare.Application.Features.Product
 
         public class Handler(
             IAppLocalizer localizer,
-            ILogger<GetAllCategory> logger,
+            ILogger<GetAllProduct> logger,
             ILoggedUser loggedUser,
             IUnitOfWork unitOfWork,
             IRepository<Domain.Entities.Product> productRepos
@@ -43,10 +43,11 @@ namespace KoiCare.Application.Features.Product
         {
             public override Task<CommandResult<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
+                // Query for products
                 var query = productRepos.Queryable()
-                    .Include(x => x.Category) // Giả sử có liên kết với bảng Category
-                    .Where(x => request.Search == null || x.Name.Contains(request.Search!))
-                    .Where(x => x.CategoryId.Equals(request.CategoryId))
+                    .Include(x => x.Category) // Assuming there's an Category relationship
+                    .Where(x => request.Search == null || x.Name.Contains(request.Search!) || x.Description.Contains(request.Search!))
+                    .Where(x => request.CategoryId == null || x.CategoryId.Equals(request.CategoryId))
                     .Select(x => new ProductResult
                     {
                         Id = x.Id,
@@ -54,15 +55,16 @@ namespace KoiCare.Application.Features.Product
                         Description = x.Description,
                         Price = x.Price,
                         ImageUrl = x.ImageUrl,
-                        Category = x.Category.Name
+                        Category = x.Category.Name 
                     });
-                // Phân trang
+              
+                // Pagination
                 if (request.PageNumber.HasValue && request.PageSize.HasValue)
                 {
                     query = query.Skip((request.PageNumber.Value - 1) * request.PageSize.Value).Take(request.PageSize.Value);
                 }
 
-                // Trả về kết quả
+                // Return the result
                 return Task.FromResult(CommandResult<Result>.Success(new Result
                 {
                     Products = query.ToList()
