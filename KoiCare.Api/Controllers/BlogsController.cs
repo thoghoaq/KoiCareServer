@@ -9,7 +9,6 @@ namespace KoiCare.Api.Controllers
     [ApiController]
     public class BlogsController(IMediator mediator) : BaseController
     {
-        [Auth]
         [HttpGet("get-all")]
         public async Task<ActionResult<GetAllBlog.Result>> GetAllBlogs([FromQuery] GetAllBlog.Query query)
         {

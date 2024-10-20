@@ -2,6 +2,7 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
+
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -56,7 +57,7 @@ namespace KoiCare.Application.Features.Product
                         ImageUrl = x.ImageUrl,
                         Category = x.Category.Name 
                     });
-
+              
                 // Pagination
                 if (request.PageNumber.HasValue && request.PageSize.HasValue)
                 {
