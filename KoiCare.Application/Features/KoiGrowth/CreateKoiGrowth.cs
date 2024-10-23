@@ -2,28 +2,20 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
+using KoiCare.Application.Features.Koifish;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace KoiCare.Application.Features.Koifish
+namespace KoiCare.Application.Features.KoiGrowth
 {
-    public class CreateKoiFish
+    public class CreateKoiGrowth
     {
         public class Command : IRequest<CommandResult<Result>>
         {
-            public required string Name { get; set; }
-            public required int KoiTypeId { get; set; }
-            public required int PondId { get; set; }
-            public string? ImageUrl { get; set; }
-            public decimal Age { get; set; }
-            public decimal? Weight { get; set; }
-            public int? Gender { get; set; }
-            public int? Origin { get; set; }
-            public int? Shape { get; set; }
-            public decimal? Breed { get; set; }
-            public decimal? Length { get; set; }
-            //public required int CategoryId { get; set; }
+            public required int KoiIndividualId { get; set; }
+            public required decimal Length { get; set; }
+            public required decimal Weight { get; set; }
         }
 
         public class Result
@@ -32,41 +24,33 @@ namespace KoiCare.Application.Features.Koifish
         }
 
         public class Handler(
-           IRepository<Domain.Entities.KoiIndividual> koiRepos,
+           IRepository<Domain.Entities.KoiGrowth> koiRepos,
            IAppLocalizer localizer,
-           ILogger<CreateKoiFish> logger,
+           ILogger<CreateKoiGrowth> logger,
            ILoggedUser loggedUser,
            IUnitOfWork unitOfWork
         ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
         {
-            private readonly IRepository<Domain.Entities.KoiIndividual> _koiRepos = koiRepos;
+            private readonly IRepository<Domain.Entities.KoiGrowth> _koiRepos = koiRepos;
 
             public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    var koifish = new Domain.Entities.KoiIndividual()
+                    var koifish = new Domain.Entities.KoiGrowth()
                     {
-                        Name = request.Name,
-                        KoiTypeId = request.KoiTypeId,
-                        PondId = request.PondId,
-                        ImageUrl = request.ImageUrl,
-                        Age = request.Age,
+                        KoiIndividualId = request.KoiIndividualId,
                         Weight = request.Weight,
-                        Gender = request.Gender,
-                        Origin = request.Origin,
-                        Shape = request.Shape,
                         Length = request.Length,
-                        Breed = request.Breed,
-                        //CategoryId = request.CategoryId
+                        MeasuredAt = DateTime.UtcNow,
                     };
-                    
+
                     await _koiRepos.AddAsync(koifish, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Thêm cá vào hồ thành công"],
+                        Message = _localizer["Lưu thông tin cá thành công"],
                     });
                 }
                 catch (Exception ex)

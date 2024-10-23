@@ -46,7 +46,7 @@ namespace KoiCare.Application.Features.Product
                 var query = productRepos.Queryable()
                     .Include(x => x.Category) // Giả sử có liên kết với bảng Category
                     .Where(x => request.Search == null || x.Name.Contains(request.Search!))
-                    .Where(x => x.CategoryId.Equals(request.CategoryId))
+                    .Where(x => request.CategoryId == null || x.CategoryId.Equals(request.CategoryId))
                     .Select(x => new ProductResult
                     {
                         Id = x.Id,
