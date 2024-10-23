@@ -1,4 +1,5 @@
-﻿using KoiCare.Application.Features.Category;
+﻿using KoiCare.Application.Features.Order;
+using KoiCare.Application.Features.Product;
 using KoiCare.Infrastructure.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,11 @@ namespace KoiCare.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController(IMediator mediator) : BaseController
+    public class OrderController(IMediator mediator) : BaseController
     {
+        [Auth]
         [HttpGet("get-all")]
-        public async Task<ActionResult<GetAllCategory.Result>> GetAllCategorys([FromQuery] GetAllCategory.Query query)
+        public async Task<ActionResult<GetAllOrder.Result>> GetAllOrders([FromQuery] GetAllOrder.Query query)
         {
             if (!ModelState.IsValid)
             {
@@ -20,10 +22,11 @@ namespace KoiCare.Api.Controllers
             return CommandResult(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetCategoryByID.Result>> GetCategoryById(int id)
+        [Auth]
+        [HttpGet("{orderId}")]
+        public async Task<ActionResult<GetOrderDetails.Result>> GetOrderDetails(int orderId)
         {
-            var query = new GetCategoryByID.Query { Id = id };
+            var query = new GetOrderDetails.Query { OrderId = orderId };
             var result = await mediator.Send(query);
             return CommandResult(result);
         }
