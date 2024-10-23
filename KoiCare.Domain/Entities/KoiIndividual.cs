@@ -14,9 +14,10 @@
         public int? Origin { get; set; }
         public int? Shape { get; set; }
         public decimal? Breed { get; set; }
+        //public required int CategoryId { get; set; }
 
         public virtual KoiType KoiType { get; set; } = null!;
-        public virtual Category Category { get; set; } = null!;
+        //public virtual Category Category { get; set; } = null!;
         public virtual Pond Pond { get; set; } = null!;
         public virtual ICollection<KoiGrowth> KoiGrowths { get; set; } = [];
         public virtual ICollection<FeedingSchedule> FeedingSchedules { get; set; } = [];
