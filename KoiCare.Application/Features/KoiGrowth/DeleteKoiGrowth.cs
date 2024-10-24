@@ -1,10 +1,7 @@
-﻿
-using KoiCare.Application.Abtractions.Database;
+﻿using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Blog;
-using KoiCare.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -39,14 +36,14 @@ namespace KoiCare.Application.Features.KoiGrowth
                     var koigrowth = await koiRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                     if (koigrowth == null)
                     {
-                        return CommandResult<Result>.Fail(_localizer["Thông tin tăng trưởng cá không tồn tại"]);
+                        return CommandResult<Result>.Fail(_localizer["Koi growth information does not exist"]);
                     }
 
                     koiRepos.Remove(koigrowth);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Xóa thông tin thành công"]
+                        Message = _localizer["Koi growth information deleted successfully"]
                     });
                 }
                 catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿
-using KoiCare.Application.Abtractions.Database;
+﻿using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
