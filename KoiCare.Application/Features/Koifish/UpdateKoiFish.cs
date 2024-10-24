@@ -2,7 +2,6 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -28,10 +27,9 @@ namespace KoiCare.Application.Features.Koifish
             public decimal? Length { get; set; }
             public decimal? Weight { get; set; }
             public int? Gender { get; set; }
-            public int? Origin { get; set; }
+            public string? Origin { get; set; }
             public int? Shape { get; set; }
-            public decimal? Breed { get; set; }
-            //public required int CategoryId { get; set; }
+            public string? Breed { get; set; }
         }
 
         public class Handler(
@@ -61,9 +59,9 @@ namespace KoiCare.Application.Features.Koifish
                     if (request.Length.HasValue) koifish.Length = request.Length.Value;
                     if (request.Weight.HasValue) koifish.Weight = request.Weight.Value;
                     if (request.Gender != null) koifish.Gender = request.Gender.Value;
-                    if (request.Origin.HasValue) koifish.Origin = request.Origin.Value;
+                    if (request.Origin != null) koifish.Origin = request.Origin;
                     if (request.Shape.HasValue) koifish.Shape = request.Shape.Value;
-                    if (request.Breed.HasValue) koifish.Breed = request.Breed.Value;
+                    if (request.Breed != null) koifish.Breed = request.Breed;
 
                     koiRepos.Update(koifish);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

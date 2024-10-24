@@ -2,15 +2,9 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Product;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KoiCare.Application.Features.Koifish
 {
@@ -25,11 +19,10 @@ namespace KoiCare.Application.Features.Koifish
             public decimal Age { get; set; }
             public decimal? Weight { get; set; }
             public int? Gender { get; set; }
-            public int? Origin { get; set; }
+            public string? Origin { get; set; }
             public int? Shape { get; set; }
-            public decimal? Breed { get; set; }
+            public string? Breed { get; set; }
             public decimal? Length { get; set; }
-            //public required int CategoryId { get; set; }
         }
 
         public class Result
@@ -64,9 +57,8 @@ namespace KoiCare.Application.Features.Koifish
                         Shape = request.Shape,
                         Length = request.Length,
                         Breed = request.Breed,
-                        //CategoryId = request.CategoryId
                     };
-                    
+
                     await _koiRepos.AddAsync(koifish, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 

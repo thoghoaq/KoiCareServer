@@ -2,18 +2,9 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Category;
-using KoiCare.Application.Features.Order;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static KoiCare.Application.Features.Order.GetOrderDetails;
-using static KoiCare.Application.Features.Product.GetAllProduct;
 
 namespace KoiCare.Application.Features.Koifish
 {
@@ -32,11 +23,9 @@ namespace KoiCare.Application.Features.Koifish
             public decimal? Length { get; set; }
             public decimal? Weight { get; set; }
             public int? Gender { get; set; }
-            public int? Origin { get; set; }
+            public string? Origin { get; set; }
             public int? Shape { get; set; }
-            public decimal? Breed { get; set; }
-            //public int CategoryId { get; set; }
-            //public string? CategoryName { get; set; }
+            public string? Breed { get; set; }
         }
 
         public class Query : IRequest<CommandResult<Result>>
@@ -79,8 +68,6 @@ namespace KoiCare.Application.Features.Koifish
                         Origin = x.Origin,
                         Shape = x.Shape,
                         Breed = x.Breed,
-                        //CategoryId = x.CategoryId,
-                        //CategoryName = x.Category.Name,
                     });
 
                 // Trả về kết quả
