@@ -192,5 +192,35 @@
   </data>
   <data name="Update koi growth successfully" xml:space="preserve">
     <value>Update koi growth successfully</value>
+
+  <data name="Feeding schedule not found" xml:space="preserve">
+    <value>Feeding schedule not found</value>
+  </data>
+  <data name="Error getting feeding schedule" xml:space="preserve">
+    <value>Error getting feeding schedule</value>
+  </data>
+  <data name="Feeding schedule created successfully" xml:space="preserve">
+    <value>Feeding schedule created successfully</value>
+  </data>
+  <data name="Amount must be greater than 0" xml:space="preserve">
+    <value>Amount must be greater than 0</value>
+  </data>
+  <data name="Period must be greater than 0" xml:space="preserve">
+    <value>Period must be greater than 0</value>
+  </data>
+  <data name="Feeding schedule updated successfully" xml:space="preserve">
+    <value>Feeding schedule updated successfully</value>
+  </data>
+  <data name="Error updating feeding schedule" xml:space="preserve">
+    <value>Error updating feeding schedule</value>
+  </data>
+  <data name="Feed calculation created successfully" xml:space="preserve">
+    <value>Feed calculation created successfully</value>
+  </data>
+  <data name="Error creating feed calculation" xml:space="preserve">
+    <value>Error creating feed calculation</value>
+  </data>
+  <data name="Feeding calculation not found" xml:space="preserve">
+    <value>Feeding calculation not found</value>
   </data>
 </root>
