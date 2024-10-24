@@ -205,4 +205,43 @@
   <data name="Feeding calculation not found" xml:space="preserve">
     <value>Feeding calculation not found</value>
   </data>
+  <data name="Koi fish not found" xml:space="preserve">
+    <value>Koi fish not found</value>
+  </data>
+  <data name="Koi fish created successfully" xml:space="preserve">
+    <value>Koi fish created successfully</value>
+  </data>
+  <data name="Update koi fish successfully" xml:space="preserve">
+    <value>Update koi fish successfully</value>
+  </data>
+  <data name="Category does not exist" xml:space="preserve">
+    <value>Category does not exist</value>
+  </data>
+  <data name="Blog post created successfully" xml:space="preserve">
+    <value>Blog post created successfully</value>
+  </data>
+  <data name="User must be logged in to create a blog post" xml:space="preserve">
+    <value>User must be logged in to create a blog post</value>
+  </data>
+  <data name="Blog deleted successfully" xml:space="preserve">
+    <value>Blog deleted successfully</value>
+  </data>
+  <data name="Blog not found" xml:space="preserve">
+    <value>Blog not found</value>
+  </data>
+  <data name="Blog updated successfully" xml:space="preserve">
+    <value>Blog updated successfully</value>
+  </data>
+  <data name="Koi growth create successfully" xml:space="preserve">
+    <value>Koi growth create successfully</value>
+  </data>
+  <data name="Koi growth information does not exist" xml:space="preserve">
+    <value>Koi growth information does not exist</value>
+  </data>
+  <data name="Update koi growth successfully" xml:space="preserve">
+    <value>Update koi growth successfully</value>
+  </data>
+  <data name="Koi growth information deleted successfully" xml:space="preserve">
+    <value>Koi growth information deleted successfully</value>
+  </data>
 </root>

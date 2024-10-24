@@ -23,7 +23,7 @@ namespace KoiCare.Api.Controllers
         }
 
         [Auth]
-        [HttpGet("{PondId}")]
+        [HttpGet("get-all-fish/{PondId}")]
         public async Task<ActionResult<GetAllFishInPond.Result>> GetAllFishInPond(int PondId)
         {
             var query = new GetAllFishInPond.Query { PondId = PondId };
@@ -58,6 +58,15 @@ namespace KoiCare.Api.Controllers
             }
 
             var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
+
+        [Auth("User")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetKoiFishById.Result>> GetKoiFishById(int id)
+        {
+            var query = new GetKoiFishById.Query { Id = id };
+            var result = await mediator.Send(query);
             return CommandResult(result);
         }
     }

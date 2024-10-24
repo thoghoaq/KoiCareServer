@@ -41,7 +41,7 @@ namespace KoiCare.Application.Features.Blog
 
                 if (blog == null)
                 {
-                    return CommandResult<Result>.Fail("Blog không tồn tại");
+                    return CommandResult<Result>.Fail("Blog not found");
                 }
 
                 var result = new Result
