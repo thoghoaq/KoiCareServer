@@ -50,7 +50,7 @@ namespace KoiCare.Application.Features.KoiGrowth
 
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Lưu thông tin cá thành công"],
+                        Message = _localizer["Koi growth create successfully"],
                     });
                 }
                 catch (Exception ex)

@@ -193,4 +193,7 @@
   <data name="Update koi growth successfully" xml:space="preserve">
     <value>Update koi growth successfully</value>
   </data>
+  <data name="Koi growth create successfully" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
