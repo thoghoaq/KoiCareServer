@@ -26,8 +26,6 @@ namespace KoiCare.Application.Features.Koifish
             public string? Origin { get; set; }
             public int? Shape { get; set; }
             public string? Breed { get; set; }
-            //public int CategoryId { get; set; }
-            //public string? CategoryName { get; set; }
         }
 
         public class Query : IRequest<CommandResult<Result>>
@@ -70,8 +68,6 @@ namespace KoiCare.Application.Features.Koifish
                         Origin = x.Origin,
                         Shape = x.Shape,
                         Breed = x.Breed,
-                        //CategoryId = x.CategoryId,
-                        //CategoryName = x.Category.Name,
                     });
 
                 // Trả về kết quả

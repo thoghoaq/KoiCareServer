@@ -30,7 +30,6 @@ namespace KoiCare.Application.Features.Koifish
             public string? Origin { get; set; }
             public int? Shape { get; set; }
             public string? Breed { get; set; }
-            //public required int CategoryId { get; set; }
         }
 
         public class Handler(

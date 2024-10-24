@@ -23,7 +23,6 @@ namespace KoiCare.Application.Features.Koifish
             public int? Shape { get; set; }
             public string? Breed { get; set; }
             public decimal? Length { get; set; }
-            //public required int CategoryId { get; set; }
         }
 
         public class Result
@@ -58,9 +57,8 @@ namespace KoiCare.Application.Features.Koifish
                         Shape = request.Shape,
                         Length = request.Length,
                         Breed = request.Breed,
-                        //CategoryId = request.CategoryId
                     };
-                    
+
                     await _koiRepos.AddAsync(koifish, cancellationToken);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);
 

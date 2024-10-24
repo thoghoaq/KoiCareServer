@@ -15,7 +15,7 @@ namespace KoiCare.Domain.Entities
         public bool IsActive { get; set; }
         public int? GenderId { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public string? PhoneNumber {  get; set; }
+        public string? PhoneNumber { get; set; }
 
 
 
@@ -23,6 +23,6 @@ namespace KoiCare.Domain.Entities
         public virtual ICollection<Pond> Ponds { get; set; } = [];
         public virtual ICollection<BlogPost> BlogPosts { get; set; } = [];
         public virtual ICollection<Order> Orders { get; set; } = [];
-        public virtual Gender? Gender { get; set; } 
+        public virtual Gender? Gender { get; set; }
     }
 }
