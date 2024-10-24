@@ -23,6 +23,24 @@ namespace KoiCare.Application.Features.Pond
             public decimal? Volume { get; set; }
             public decimal? DrainageCount { get; set; }
             public decimal? PumpCapacity { get; set; }
+            public virtual SaltRequirement? SaltRequirement { get; set; }
+            public virtual WaterParameter? WaterParameter { get; set; }
+        }
+
+        public record SaltRequirement
+        {
+            public decimal? RequiredAmount { get; set; }
+        }
+
+        public record WaterParameter
+        {
+            public decimal? Temperature { get; set; }
+            public decimal? Salinity { get; set; }
+            public decimal? Ph { get; set; }
+            public decimal? Oxygen { get; set; }
+            public decimal? NO2 { get; set; }
+            public decimal? NO3 { get; set; }
+            public decimal? PO4 { get; set; }
         }
 
         public class CreateCommandValidator : AbstractValidator<Command>
@@ -94,6 +112,8 @@ namespace KoiCare.Application.Features.Pond
 
         public class Handler(
             IRepository<Domain.Entities.Pond> pondRepos,
+            IRepository<Domain.Entities.SaltRequirement> saltRequirementRepos,
+            IRepository<Domain.Entities.WaterParameter> waterParameterRepos,
             IAppLocalizer localizer,
             ILogger<CreateUpdatePond> logger,
             ILoggedUser loggedUser,
@@ -161,6 +181,47 @@ namespace KoiCare.Application.Features.Pond
                         pondRepos.Add(pond);
                         await _unitOfWork.SaveChangesAsync(cancellationToken);
                         pondId = pond.Id;
+                    }
+
+                    if (request.SaltRequirement != null)
+                    {
+                        if (!request.SaltRequirement.RequiredAmount.HasValue)
+                        {
+                            return CommandResult<Result>.Fail(_localizer["Required amount is required"]);
+                        }
+                        var saltRequirement = await saltRequirementRepos.Queryable().FirstOrDefaultAsync(x => x.PondId == pondId, cancellationToken);
+                        if (saltRequirement != null)
+                        {
+                            saltRequirement.RequiredAmount = (decimal)request.SaltRequirement.RequiredAmount;
+                            saltRequirementRepos.Update(saltRequirement);
+                        }
+                        else
+                        {
+                            saltRequirement = new Domain.Entities.SaltRequirement
+                            {
+                                PondId = pondId,
+                                RequiredAmount = (decimal)request.SaltRequirement.RequiredAmount
+                            };
+                            saltRequirementRepos.Add(saltRequirement);
+                        }
+                        await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    }
+
+                    if (request.WaterParameter != null)
+                    {
+                        waterParameterRepos.Add(new Domain.Entities.WaterParameter
+                        {
+                            PondId = pondId,
+                            Temperature = request.WaterParameter.Temperature,
+                            Salinity = request.WaterParameter.Salinity,
+                            Ph = request.WaterParameter.Ph,
+                            Oxygen = request.WaterParameter.Oxygen,
+                            NO2 = request.WaterParameter.NO2,
+                            NO3 = request.WaterParameter.NO3,
+                            PO4 = request.WaterParameter.PO4,
+                            MeasuredAt = DateTime.UtcNow
+                        });
+                        await _unitOfWork.SaveChangesAsync(cancellationToken);
                     }
 
                     return CommandResult<Result>.Success(new Result
