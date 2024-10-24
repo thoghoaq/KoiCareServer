@@ -2,7 +2,6 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -50,7 +49,7 @@ namespace KoiCare.Application.Features.Koifish
                     var koifish = await koiRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                     if (koifish == null)
                     {
-                        return CommandResult<Result>.Fail(_localizer["Cá koi không tồn tại"]);
+                        return CommandResult<Result>.Fail(_localizer["Koi fish not found"]);
                     }
                     //Update KoiFish
                     if (request.Name != null) koifish.Name = request.Name;
@@ -70,7 +69,7 @@ namespace KoiCare.Application.Features.Koifish
 
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Cập nhật cá koi thành công"]
+                        Message = _localizer["Update koi fish successfully"]
                     });
                 }
                 catch (Exception ex)

@@ -3,7 +3,6 @@ using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Koifish;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -42,7 +41,7 @@ namespace KoiCare.Application.Features.KoiGrowth
                     var koifish = await koiRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                     if (koifish == null)
                     {
-                        return CommandResult<Result>.Fail(_localizer["Thông tin tăng trưởng không tồn tại"]);
+                        return CommandResult<Result>.Fail(_localizer["Koi growth information does not exist"]);
                     }
                     //Update KoiGrowth
                     if (request.KoiIndividualId != null) koifish.KoiIndividualId = request.KoiIndividualId.Value;
@@ -53,7 +52,7 @@ namespace KoiCare.Application.Features.KoiGrowth
 
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Cập nhật thông tin cá koi thành công"]
+                        Message = _localizer["Update koi growth successfully"]
                     });
                 }
                 catch (Exception ex)

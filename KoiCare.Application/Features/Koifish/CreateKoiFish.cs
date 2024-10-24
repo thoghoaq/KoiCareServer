@@ -66,7 +66,7 @@ namespace KoiCare.Application.Features.Koifish
 
                     return CommandResult<Result>.Success(new Result
                     {
-                        Message = _localizer["Thêm cá vào hồ thành công"],
+                        Message = _localizer["Koi fish created successfully"],
                     });
                 }
                 catch (Exception ex)

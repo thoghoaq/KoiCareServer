@@ -175,4 +175,22 @@
   <data name="Pump capacity is greater than 0" xml:space="preserve">
     <value>Công suất bơm lớn hơn 0</value>
   </data>
+  <data name="Koi fish created successfully" xml:space="preserve">
+    <value>Thêm cá vào hồ thành công</value>
+  </data>
+  <data name="Koi fish not found" xml:space="preserve">
+    <value>Cá koi không tồn tại</value>
+  </data>
+  <data name="Update koi fish successfully" xml:space="preserve">
+    <value>Cập nhật cá koi thành công</value>
+  </data>
+  <data name="Category does not exist" xml:space="preserve">
+    <value>Danh mục không tồn tại</value>
+  </data>
+  <data name="Koi growth information does not exist" xml:space="preserve">
+    <value>Thông tin tăng trưởng không tồn tại</value>
+  </data>
+  <data name="Update koi growth successfully" xml:space="preserve">
+    <value>Cập nhật quá trình tăng trưởng thành công</value>
+  </data>
 </root>

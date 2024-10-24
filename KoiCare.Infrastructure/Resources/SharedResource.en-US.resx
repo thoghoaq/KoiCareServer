@@ -175,4 +175,22 @@
   <data name="Pump capacity is greater than 0" xml:space="preserve">
     <value>Pump capacity is greater than 0</value>
   </data>
+  <data name="Koi fish created successfully" xml:space="preserve">
+    <value>Koi fish created successfully</value>
+  </data>
+  <data name="Koi fish not found" xml:space="preserve">
+    <value>Koi fish not found</value>
+  </data>
+  <data name="Update koi fish successfully" xml:space="preserve">
+    <value>Update koi fish successfully</value>
+  </data>
+  <data name="Category does not exist" xml:space="preserve">
+    <value>Category does not exist</value>
+  </data>
+  <data name="Koi growth information does not exist" xml:space="preserve">
+    <value>Koi growth information does not exist</value>
+  </data>
+  <data name="Update koi growth successfully" xml:space="preserve">
+    <value>Update koi growth successfully</value>
+  </data>
 </root>

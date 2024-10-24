@@ -51,7 +51,7 @@ namespace KoiCare.Application.Features.Koifish
 
                 if (koifish == null)
                 {
-                    return CommandResult<Result>.Fail("Cá koi không tồn tại");
+                    return CommandResult<Result>.Fail("Koi fish not found");
                 }
 
                 var result = new Result

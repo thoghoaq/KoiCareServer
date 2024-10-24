@@ -2,18 +2,9 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Application.Features.Category;
-using KoiCare.Application.Features.Order;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static KoiCare.Application.Features.Order.GetOrderDetails;
-using static KoiCare.Application.Features.Product.GetAllProduct;
 
 namespace KoiCare.Application.Features.Koifish
 {
