@@ -30,6 +30,29 @@ namespace KoiCare.Application.Features.Pond
             public decimal Volume { get; set; }
             public decimal DrainageCount { get; set; }
             public decimal PumpCapacity { get; set; }
+            public virtual SaltRequirement? SaltRequirement { get; set; } = null!;
+            public virtual ICollection<WaterParameter> WaterParameters { get; set; } = [];
+        }
+
+        public record SaltRequirement
+        {
+            public int Id { get; set; }
+            public int PondId { get; set; }
+            public decimal RequiredAmount { get; set; }
+        }
+
+        public record WaterParameter
+        {
+            public int Id { get; set; }
+            public int PondId { get; set; }
+            public decimal? Temperature { get; set; }
+            public decimal? Salinity { get; set; }
+            public decimal? Ph { get; set; }
+            public decimal? Oxygen { get; set; }
+            public decimal? NO2 { get; set; }
+            public decimal? NO3 { get; set; }
+            public decimal? PO4 { get; set; }
+            public DateTime MeasuredAt { get; set; }
         }
 
         public class Handler(
@@ -42,7 +65,10 @@ namespace KoiCare.Application.Features.Pond
         {
             public async override Task<CommandResult<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var pond = await pondRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+                var pond = await pondRepos.Queryable()
+                    .Include(x => x.SaltRequirement)
+                    .Include(x => x.WaterParameters)
+                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                 if (pond == null)
                 {
                     return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Pond not found"]);
@@ -64,7 +90,26 @@ namespace KoiCare.Application.Features.Pond
                     Depth = pond.Depth,
                     Volume = pond.Volume,
                     DrainageCount = pond.DrainageCount,
-                    PumpCapacity = pond.PumpCapacity
+                    PumpCapacity = pond.PumpCapacity,
+                    SaltRequirement = pond.SaltRequirement != null ? new SaltRequirement
+                    {
+                        Id = pond.SaltRequirement.Id,
+                        PondId = pond.SaltRequirement.PondId,
+                        RequiredAmount = pond.SaltRequirement.RequiredAmount
+                    } : null,
+                    WaterParameters = pond.WaterParameters.OrderByDescending(y => y.MeasuredAt).Select(w => new WaterParameter
+                    {
+                        Id = w.Id,
+                        PondId = w.PondId,
+                        Temperature = w.Temperature,
+                        Salinity = w.Salinity,
+                        Ph = w.Ph,
+                        Oxygen = w.Oxygen,
+                        NO2 = w.NO2,
+                        NO3 = w.NO3,
+                        PO4 = w.PO4,
+                        MeasuredAt = w.MeasuredAt
+                    }).ToList()
                 });
             }
         }
