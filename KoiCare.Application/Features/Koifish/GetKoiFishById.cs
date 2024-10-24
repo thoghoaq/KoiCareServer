@@ -23,9 +23,9 @@ namespace KoiCare.Application.Features.Koifish
             public decimal? Length { get; set; }
             public decimal? Weight { get; set; }
             public int? Gender { get; set; }
-            public int? Origin { get; set; }
+            public string? Origin { get; set; }
             public int? Shape { get; set; }
-            public decimal? Breed { get; set; }
+            public string? Breed { get; set; }
         }
 
         public class Query : IRequest<CommandResult<Result>>
