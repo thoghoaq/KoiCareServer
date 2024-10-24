@@ -175,4 +175,34 @@
   <data name="Pump capacity is greater than 0" xml:space="preserve">
     <value>Công suất bơm lớn hơn 0</value>
   </data>
+  <data name="Feeding schedule not found" xml:space="preserve">
+    <value>Không tìm thấy lịch trình cho ăn</value>
+  </data>
+  <data name="Error getting feeding schedule" xml:space="preserve">
+    <value>Lỗi khi nhận lịch trình cho ăn</value>
+  </data>
+  <data name="Feeding schedule created successfully" xml:space="preserve">
+    <value>Lịch thức ăn được tạo thành công</value>
+  </data>
+  <data name="Amount must be greater than 0" xml:space="preserve">
+    <value>Số lượng phải lớn hơn 0</value>
+  </data>
+  <data name="Period must be greater than 0" xml:space="preserve">
+    <value>Thời gian phải lớn hơn 0</value>
+  </data>
+  <data name="Feeding schedule updated successfully" xml:space="preserve">
+    <value>Lịch thức ăn được cập nhật thành công</value>
+  </data>
+  <data name="Error updating feeding schedule" xml:space="preserve">
+    <value>Lỗi cập nhật lịch trình ăn</value>
+  </data>
+  <data name="Feed calculation created successfully" xml:space="preserve">
+    <value>Tính toán thức ăn được tạo thành công</value>
+  </data>
+  <data name="Error creating feed calculation" xml:space="preserve">
+    <value>Lỗi khi tạo tính toán cho ăn</value>
+  </data>
+  <data name="Feeding calculation not found" xml:space="preserve">
+    <value>Không tìm thấy tính toán cho ăn</value>
+  </data>
 </root>
