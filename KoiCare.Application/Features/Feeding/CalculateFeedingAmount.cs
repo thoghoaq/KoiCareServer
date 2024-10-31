@@ -47,7 +47,7 @@ namespace KoiCare.Application.Features.Feeding
             {
                 try
                 {
-                    var validator = new CommandValidator(localizer);
+                    var validator = new CommandValidator(_localizer);
                     var validationResult = await validator.ValidateAsync(request, cancellationToken);
                     if (!validationResult.IsValid)
                     {
@@ -72,8 +72,8 @@ namespace KoiCare.Application.Features.Feeding
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
-                    return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, localizer["Error creating feed calculation"]);
+                    _logger.LogError(ex, "CalculateFeedingAmountError");
+                    return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, _localizer["Error creating feed calculation"]);
                 }
             }
         }

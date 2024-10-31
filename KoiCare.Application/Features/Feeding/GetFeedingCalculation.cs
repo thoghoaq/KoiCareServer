@@ -38,7 +38,7 @@ namespace KoiCare.Application.Features.Feeding
 
                 if (feedCalculation == null)
                 {
-                    return CommandResult<QueryResult>.Fail(localizer["Feeding calculation not found"]);
+                    return CommandResult<QueryResult>.Fail(_localizer["Feeding calculation not found"]);
                 }
 
                 return CommandResult<QueryResult>.Success(new QueryResult

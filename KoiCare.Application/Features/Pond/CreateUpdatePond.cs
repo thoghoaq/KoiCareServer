@@ -125,7 +125,7 @@ namespace KoiCare.Application.Features.Pond
                     if (request.Id.HasValue)
                     {
                         // Update
-                        var validator = new UpdateCommandValidator(localizer);
+                        var validator = new UpdateCommandValidator(_localizer);
                         var validationResult = await validator.ValidateAsync(request, cancellationToken);
                         if (!validationResult.IsValid)
                         {
@@ -159,7 +159,7 @@ namespace KoiCare.Application.Features.Pond
                     else
                     {
                         // Create
-                        var validator = new CreateCommandValidator(localizer);
+                        var validator = new CreateCommandValidator(_localizer);
                         var validationResult = await validator.ValidateAsync(request, cancellationToken);
                         if (!validationResult.IsValid)
                         {
@@ -235,7 +235,7 @@ namespace KoiCare.Application.Features.Pond
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    _logger.LogError(ex, "CreateUpdatePondError");
                     return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
                 }
             }

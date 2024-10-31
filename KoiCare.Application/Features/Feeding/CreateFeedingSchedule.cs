@@ -46,7 +46,7 @@ namespace KoiCare.Application.Features.Feeding
             {
                 try
                 {
-                    var validator = new CommandValidator(localizer);
+                    var validator = new CommandValidator(_localizer);
                     var validationResult = await validator.ValidateAsync(request, cancellationToken);
                     if (!validationResult.IsValid)
                     {
@@ -69,7 +69,7 @@ namespace KoiCare.Application.Features.Feeding
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    _logger.LogError(ex, "CreateFeedingScheduleError");
                     return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
                 }
             }

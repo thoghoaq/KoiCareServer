@@ -48,7 +48,7 @@ namespace KoiCare.Application.Features.Feeding
             {
                 try
                 {
-                    var validator = new CommandValidator(localizer);
+                    var validator = new CommandValidator(_localizer);
                     var validationResult = await validator.ValidateAsync(request, cancellationToken);
                     if (!validationResult.IsValid)
                     {
@@ -57,7 +57,7 @@ namespace KoiCare.Application.Features.Feeding
                     var feedingSchedule = await feedingScheduleRepos.Queryable().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                     if (feedingSchedule == null)
                     {
-                        return CommandResult<Result>.Fail(localizer["Feeding schedule not found"]);
+                        return CommandResult<Result>.Fail(_localizer["Feeding schedule not found"]);
                     }
                     feedingSchedule.PondId = request.PondId;
                     feedingSchedule.Amount = request.Amount;
@@ -73,7 +73,7 @@ namespace KoiCare.Application.Features.Feeding
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error updating feeding schedule");
-                    return CommandResult<Result>.Fail(localizer["Error updating feeding schedule"]);
+                    return CommandResult<Result>.Fail(_localizer["Error updating feeding schedule"]);
                 }
             }
         }
