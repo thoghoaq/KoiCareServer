@@ -55,7 +55,7 @@ namespace KoiCare.Application.Features.Koifish
                     {
                         return CommandResult<Result>.Fail(_localizer["Pond not found"]);
                     }
-                    if (pond.KoiGroup?.KoiTypes.Any(t => t.Id != request.KoiTypeId) == true)
+                    if (pond.KoiGroup?.KoiTypes.Any(t => t.Id != request.KoiTypeId) != true)
                     {
                         return CommandResult<Result>.Fail(_localizer["Koi type is not suitable for this pond"]);
                     }
