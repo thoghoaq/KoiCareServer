@@ -1,9 +1,11 @@
 ﻿using KoiCare.Application.Features.Feeding;
+using KoiCare.Infrastructure.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KoiCare.Api.Controllers
 {
+    [Auth]
     [ApiController]
     [Route("api/[controller]")]
     public class FeedingController(IMediator mediator) : BaseController
@@ -57,6 +59,13 @@ namespace KoiCare.Api.Controllers
 
         [HttpGet("feed-calculation")]
         public async Task<ActionResult<GetFeedingCalculation.QueryResult>> CalculateFeedingAmount([FromQuery] GetFeedingCalculation.Query query)
+        {
+            var result = await mediator.Send(query);
+            return CommandResult(result);
+        }
+
+        [HttpGet("serving-size")]
+        public async Task<ActionResult<GetServingSize.Result>> GetServingSize([FromQuery] GetServingSize.Query query)
         {
             var result = await mediator.Send(query);
             return CommandResult(result);

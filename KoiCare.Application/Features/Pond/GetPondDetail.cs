@@ -2,6 +2,7 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
+using KoiCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,10 @@ namespace KoiCare.Application.Features.Pond
             public decimal Volume { get; set; }
             public decimal DrainageCount { get; set; }
             public decimal PumpCapacity { get; set; }
+            public int? KoiGroupId { get; set; }
+            public string? KoiGroupName { get; set; }
+            public EAgeRange? AgeRange { get; set; }
+            public EGender? Gender { get; set; }
             public virtual SaltRequirement? SaltRequirement { get; set; } = null!;
             public virtual ICollection<WaterParameter> WaterParameters { get; set; } = [];
         }
@@ -74,7 +79,7 @@ namespace KoiCare.Application.Features.Pond
                     return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Pond not found"]);
                 }
 
-                if (_loggedUser.UserId != pond.OwnerId)
+                if (_loggedUser.UserId != pond.OwnerId && !_loggedUser.IsAdmin)
                 {
                     return CommandResult<Result>.Fail(HttpStatusCode.Forbidden, _localizer["You are not owner of this pond"]);
                 }
@@ -91,6 +96,10 @@ namespace KoiCare.Application.Features.Pond
                     Volume = pond.Volume,
                     DrainageCount = pond.DrainageCount,
                     PumpCapacity = pond.PumpCapacity,
+                    AgeRange = pond.AgeRange,
+                    KoiGroupId = pond.KoiGroupId,
+                    KoiGroupName = pond.KoiGroup != null ? pond.KoiGroup.Name : null,
+                    Gender = pond.Gender,
                     SaltRequirement = pond.SaltRequirement != null ? new SaltRequirement
                     {
                         Id = pond.SaltRequirement.Id,

@@ -2,7 +2,10 @@
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
+using KoiCare.Application.Helpers;
+using KoiCare.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
@@ -18,7 +21,7 @@ namespace KoiCare.Application.Features.Koifish
             public string? ImageUrl { get; set; }
             public decimal Age { get; set; }
             public decimal? Weight { get; set; }
-            public int? Gender { get; set; }
+            public EGender? Gender { get; set; }
             public string? Origin { get; set; }
             public int? Shape { get; set; }
             public string? Breed { get; set; }
@@ -32,6 +35,7 @@ namespace KoiCare.Application.Features.Koifish
 
         public class Handler(
            IRepository<Domain.Entities.KoiIndividual> koiRepos,
+           IRepository<Domain.Entities.Pond> pondRepos,
            IAppLocalizer localizer,
            ILogger<CreateKoiFish> logger,
            ILoggedUser loggedUser,
@@ -44,6 +48,28 @@ namespace KoiCare.Application.Features.Koifish
             {
                 try
                 {
+                    var pond = await pondRepos.Queryable()
+                        .Include(x => x.KoiGroup).ThenInclude(x => x!.KoiTypes)
+                        .FirstOrDefaultAsync(x => x.Id == request.PondId, cancellationToken);
+                    if (pond == null)
+                    {
+                        return CommandResult<Result>.Fail(_localizer["Pond not found"]);
+                    }
+                    if (pond.KoiGroup?.KoiTypes.Any(t => t.Id != request.KoiTypeId) == true)
+                    {
+                        return CommandResult<Result>.Fail(_localizer["Koi type is not suitable for this pond"]);
+                    }
+
+                    if (pond.Gender != null && request.Gender != pond.Gender)
+                    {
+                        return CommandResult<Result>.Fail(_localizer["Gender is not suitable for this pond"]);
+                    }
+
+                    if (pond.AgeRange != null && !request.Age.IsInAgeRange(pond.AgeRange))
+                    {
+                        return CommandResult<Result>.Fail(_localizer["Age is not suitable for this pond"]);
+                    }
+
                     var koifish = new Domain.Entities.KoiIndividual()
                     {
                         Name = request.Name,
@@ -52,7 +78,7 @@ namespace KoiCare.Application.Features.Koifish
                         ImageUrl = request.ImageUrl,
                         Age = request.Age,
                         Weight = request.Weight,
-                        Gender = request.Gender,
+                        Gender = (int?)request.Gender,
                         Origin = request.Origin,
                         Shape = request.Shape,
                         Length = request.Length,

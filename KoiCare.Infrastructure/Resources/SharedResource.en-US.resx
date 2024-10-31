@@ -244,4 +244,16 @@
   <data name="Koi growth information deleted successfully" xml:space="preserve">
     <value>Koi growth information deleted successfully</value>
   </data>
+  <data name="There are no serving size match with pond setting" xml:space="preserve">
+    <value>There are no serving size match with pond setting</value>
+  </data>
+  <data name="Koi type is not suitable for this pond" xml:space="preserve">
+    <value>Koi type is not suitable for this pond</value>
+  </data>
+  <data name="Gender is not suitable for this pond" xml:space="preserve">
+    <value>Gender is not suitable for this pond</value>
+  </data>
+  <data name="Age is not suitable for this pond" xml:space="preserve">
+    <value>Age is not suitable for this pond</value>
+  </data>
 </root>

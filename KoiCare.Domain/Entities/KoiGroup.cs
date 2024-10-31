@@ -7,5 +7,6 @@
 
         public ICollection<KoiType> KoiTypes { get; set; } = [];
         public ICollection<ServingSize> ServingSizes { get; set; } = [];
+        public ICollection<Pond> Ponds { get; set; } = [];
     }
 }

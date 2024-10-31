@@ -244,4 +244,16 @@
   <data name="Koi growth information deleted successfully" xml:space="preserve">
     <value>Xóa thông tin tăng trưởng thành công</value>
   </data>
+  <data name="There are no serving size match with pond setting" xml:space="preserve">
+    <value>Không tìm thấy khẩu phần ăn phù hợp với cài đặt hồ</value>
+  </data>
+  <data name="Koi type is not suitable for this pond" xml:space="preserve">
+    <value>Loại cá không phù hợp với hồ</value>
+  </data>
+  <data name="Gender is not suitable for this pond" xml:space="preserve">
+    <value>Giới tính không phù hợp với ao này</value>
+  </data>
+  <data name="Age is not suitable for this pond" xml:space="preserve">
+    <value>Tuổi không phù hợp với ao này</value>
+  </data>
 </root>

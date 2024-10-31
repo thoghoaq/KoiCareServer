@@ -3,6 +3,7 @@ using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
+using KoiCare.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,9 @@ namespace KoiCare.Application.Features.Pond
             public decimal? Volume { get; set; }
             public decimal? DrainageCount { get; set; }
             public decimal? PumpCapacity { get; set; }
+            public int? KoiGroupId { get; set; }
+            public EAgeRange? AgeRange { get; set; }
+            public EGender? Gender { get; set; }
             public virtual SaltRequirement? SaltRequirement { get; set; }
             public virtual WaterParameter? WaterParameter { get; set; }
         }
@@ -82,24 +86,17 @@ namespace KoiCare.Application.Features.Pond
             public UpdateCommandValidator(IAppLocalizer localizer)
             {
                 RuleFor(x => x.Id).NotEmpty().WithMessage(localizer["Id is required"]);
-                RuleFor(x => x.Name).NotEmpty().WithMessage(localizer["Name is required"]);
                 RuleFor(x => x.Length)
-                    .NotEmpty().WithMessage(localizer["Length is required"])
                     .GreaterThan(0).WithMessage(localizer["Length is greater than 0"]);
                 RuleFor(x => x.Width)
-                    .NotEmpty().WithMessage(localizer["Width is required"])
                     .GreaterThan(0).WithMessage(localizer["Width is greater than 0"]);
                 RuleFor(x => x.Depth)
-                    .NotEmpty().WithMessage(localizer["Depth is required"])
                     .GreaterThan(0).WithMessage(localizer["Depth is greater than 0"]);
                 RuleFor(x => x.Volume)
-                    .NotEmpty().WithMessage(localizer["Volume is required"])
                     .GreaterThan(0).WithMessage(localizer["Volume is greater than 0"]);
                 RuleFor(x => x.DrainageCount)
-                    .NotEmpty().WithMessage(localizer["Drainage count is required"])
                     .GreaterThan(0).WithMessage(localizer["Drainage count is greater than 0"]);
                 RuleFor(x => x.PumpCapacity)
-                    .NotEmpty().WithMessage(localizer["Pump capacity is required"])
                     .GreaterThan(0).WithMessage(localizer["Pump capacity is greater than 0"]);
             }
         }
@@ -140,7 +137,7 @@ namespace KoiCare.Application.Features.Pond
                         {
                             return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Pond not found"]);
                         }
-                        if (pond.OwnerId != ownerId)
+                        if (pond.OwnerId != ownerId && !_loggedUser.IsAdmin)
                         {
                             return CommandResult<Result>.Fail(HttpStatusCode.Forbidden, _localizer["You are not allowed to update this pond"]);
                         }
@@ -152,6 +149,9 @@ namespace KoiCare.Application.Features.Pond
                         if (request.Volume.HasValue) pond.Volume = request.Volume.Value;
                         if (request.DrainageCount.HasValue) pond.DrainageCount = request.DrainageCount.Value;
                         if (request.PumpCapacity.HasValue) pond.PumpCapacity = request.PumpCapacity.Value;
+                        if (request.AgeRange.HasValue) pond.AgeRange = request.AgeRange.Value;
+                        if (request.KoiGroupId.HasValue) pond.KoiGroupId = request.KoiGroupId.Value;
+                        if (request.Gender.HasValue) pond.Gender = request.Gender.Value;
                         pondRepos.Update(pond);
                         pondId = pond.Id;
                         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -176,7 +176,10 @@ namespace KoiCare.Application.Features.Pond
                             Depth = request.Depth!.Value,
                             Volume = request.Volume!.Value,
                             DrainageCount = request.DrainageCount!.Value,
-                            PumpCapacity = request.PumpCapacity!.Value
+                            PumpCapacity = request.PumpCapacity!.Value,
+                            AgeRange = request.AgeRange,
+                            KoiGroupId = request.KoiGroupId,
+                            Gender = request.Gender
                         };
                         pondRepos.Add(pond);
                         await _unitOfWork.SaveChangesAsync(cancellationToken);
