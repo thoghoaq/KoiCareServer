@@ -33,6 +33,10 @@ namespace KoiCare.Application.Features.Pond
             public decimal Volume { get; set; }
             public decimal DrainageCount { get; set; }
             public decimal PumpCapacity { get; set; }
+            public int? KoiGroupId { get; set; }
+            public string? KoiGroupName { get; set; }
+            public EAgeRange? AgeRange { get; set; }
+            public EGender? Gender { get; set; }
             public virtual SaltRequirement? SaltRequirement { get; set; } = null!;
             public virtual ICollection<WaterParameter> WaterParameters { get; set; } = [];
         }
@@ -71,6 +75,7 @@ namespace KoiCare.Application.Features.Pond
                 var ponds = await pondRepos.Queryable()
                     .Include(x => x.SaltRequirement)
                     .Include(x => x.WaterParameters)
+                    .Include(x => x.KoiGroup)
                     .Where(x => _loggedUser.RoleId == (int)ERole.Admin || x.OwnerId == _loggedUser.UserId)
                     .Select(x => new PondResult
                     {
@@ -84,6 +89,10 @@ namespace KoiCare.Application.Features.Pond
                         Volume = x.Volume,
                         DrainageCount = x.DrainageCount,
                         PumpCapacity = x.PumpCapacity,
+                        AgeRange = x.AgeRange,
+                        KoiGroupId = x.KoiGroupId,
+                        KoiGroupName = x.KoiGroup != null ? x.KoiGroup.Name : null,
+                        Gender = x.Gender,
                         SaltRequirement = x.SaltRequirement != null ? new SaltRequirement
                         {
                             Id = x.SaltRequirement.Id,

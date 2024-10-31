@@ -1,4 +1,6 @@
-﻿namespace KoiCare.Domain.Entities
+﻿using KoiCare.Domain.Enums;
+
+namespace KoiCare.Domain.Entities
 {
     public class Pond
     {
@@ -12,10 +14,15 @@
         public decimal Volume { get; set; }
         public decimal DrainageCount { get; set; }
         public decimal PumpCapacity { get; set; }
+        public int? KoiGroupId { get; set; }
+        public EAgeRange? AgeRange { get; set; }
+        public EGender? Gender { get; set; }
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<KoiIndividual> KoiIndividuals { get; set; } = [];
         public virtual SaltRequirement SaltRequirement { get; set; } = null!;
         public virtual ICollection<WaterParameter> WaterParameters { get; set; } = [];
+        public virtual ICollection<FeedingSchedule> FeedingSchedules { get; set; } = [];
+        public virtual KoiGroup? KoiGroup { get; set; }
     }
 }

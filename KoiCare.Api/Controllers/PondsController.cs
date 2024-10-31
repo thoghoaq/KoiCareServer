@@ -46,5 +46,13 @@ namespace KoiCare.Api.Controllers
             var result = await mediator.Send(query);
             return CommandResult(result);
         }
+
+        [Auth]
+        [HttpGet("salt-calculation")]
+        public async Task<ActionResult<GetSaltCalculation.Result>> GetSaltCalculation([FromQuery] GetSaltCalculation.Query query)
+        {
+            var result = await mediator.Send(query);
+            return CommandResult(result);
+        }
     }
 }

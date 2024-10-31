@@ -3,6 +3,7 @@ using System;
 using KoiCare.Infrastructure.Dependencies.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace KoiCare.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031072627_ModifyPond")]
+    partial class ModifyPond
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -486,23 +489,14 @@ namespace KoiCare.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AgeRange")
-                        .HasColumnType("integer");
-
                     b.Property<decimal>("Depth")
                         .HasColumnType("numeric");
 
                     b.Property<decimal>("DrainageCount")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("Gender")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
-
-                    b.Property<int?>("KoiGroupId")
-                        .HasColumnType("integer");
 
                     b.Property<decimal>("Length")
                         .HasColumnType("numeric");
@@ -524,8 +518,6 @@ namespace KoiCare.Infrastructure.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("KoiGroupId");
 
                     b.HasIndex("OwnerId");
 
@@ -988,17 +980,11 @@ namespace KoiCare.Infrastructure.Migrations
 
             modelBuilder.Entity("KoiCare.Domain.Entities.Pond", b =>
                 {
-                    b.HasOne("KoiCare.Domain.Entities.KoiGroup", "KoiGroup")
-                        .WithMany("Ponds")
-                        .HasForeignKey("KoiGroupId");
-
                     b.HasOne("KoiCare.Domain.Entities.User", "User")
                         .WithMany("Ponds")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("KoiGroup");
 
                     b.Navigation("User");
                 });
@@ -1077,8 +1063,6 @@ namespace KoiCare.Infrastructure.Migrations
             modelBuilder.Entity("KoiCare.Domain.Entities.KoiGroup", b =>
                 {
                     b.Navigation("KoiTypes");
-
-                    b.Navigation("Ponds");
 
                     b.Navigation("ServingSizes");
                 });

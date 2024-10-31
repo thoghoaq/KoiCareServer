@@ -13,7 +13,7 @@ namespace KoiCare.Application.Features.Feeding
     {
         public class Query : IRequest<CommandResult<Result>>
         {
-            public int KoiIndividualId { get; set; }
+            public int PondId { get; set; }
         }
 
         public class Result
@@ -38,7 +38,7 @@ namespace KoiCare.Application.Features.Feeding
                 try
                 {
                     var feedingSchedule = await _feedingScheduleRepos.Queryable()
-                        .Where(x => x.KoiIndividualId == request.KoiIndividualId).FirstOrDefaultAsync(cancellationToken);
+                        .Where(x => x.PondId == request.PondId).FirstOrDefaultAsync(cancellationToken);
                     if (feedingSchedule == null)
                     {
                         return CommandResult<Result>.Fail(localizer["Feeding schedule not found"]);
