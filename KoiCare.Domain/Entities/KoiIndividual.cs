@@ -18,7 +18,6 @@
         public virtual KoiType KoiType { get; set; } = null!;
         public virtual Pond Pond { get; set; } = null!;
         public virtual ICollection<KoiGrowth> KoiGrowths { get; set; } = [];
-        public virtual ICollection<FeedingSchedule> FeedingSchedules { get; set; } = [];
         public virtual ICollection<FeedCalculation> FeedCalculations { get; set; } = [];
     }
 }

@@ -14,7 +14,7 @@ namespace KoiCare.Application.Features.Feeding
     {
         public class Command : IRequest<CommandResult<Result>>
         {
-            public int KoiIndividualId { get; set; }
+            public int PondId { get; set; }
             public decimal Amount { get; set; }
             public decimal Period { get; set; }
         }
@@ -28,7 +28,7 @@ namespace KoiCare.Application.Features.Feeding
         {
             public CommandValidator(IAppLocalizer localizer)
             {
-                RuleFor(x => x.KoiIndividualId).NotEmpty();
+                RuleFor(x => x.PondId).NotEmpty();
                 RuleFor(x => x.Amount).NotEmpty().GreaterThan(0).WithMessage(localizer["Amount must be greater than 0"]);
                 RuleFor(x => x.Period).NotEmpty().GreaterThan(0).WithMessage(localizer["Period must be greater than 0"]);
             }
@@ -54,7 +54,7 @@ namespace KoiCare.Application.Features.Feeding
                     }
                     var feedingSchedule = new Domain.Entities.FeedingSchedule()
                     {
-                        KoiIndividualId = request.KoiIndividualId,
+                        PondId = request.PondId,
                         Amount = request.Amount,
                         Period = request.Period
                     };

@@ -17,5 +17,6 @@
         public virtual ICollection<KoiIndividual> KoiIndividuals { get; set; } = [];
         public virtual SaltRequirement SaltRequirement { get; set; } = null!;
         public virtual ICollection<WaterParameter> WaterParameters { get; set; } = [];
+        public virtual ICollection<FeedingSchedule> FeedingSchedules { get; set; } = [];
     }
 }

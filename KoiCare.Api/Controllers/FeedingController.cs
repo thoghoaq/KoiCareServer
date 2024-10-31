@@ -11,7 +11,7 @@ namespace KoiCare.Api.Controllers
         [HttpGet("{KoiIndividualId}")]
         public async Task<ActionResult<GetFeedingSchedule.Result>> GetFeedingSchedule(int KoiIndividualId)
         {
-            var query = new GetFeedingSchedule.Query { KoiIndividualId = KoiIndividualId };
+            var query = new GetFeedingSchedule.Query { PondId = KoiIndividualId };
             var result = await mediator.Send(query);
             return CommandResult(result);
         }
