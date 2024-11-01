@@ -44,6 +44,13 @@ namespace KoiCare.Application.Features.Order
                     return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Order not found"]);
                 }
 
+                // Kiểm tra nếu trạng thái
+                if (order.IsCompleted && !request.IsCompleted)
+                {
+                    _logger.LogWarning("Attempt to revert completion status for Order ID {OrderId}.", request.OrderId);
+                    return CommandResult<Result>.Fail(HttpStatusCode.BadRequest, _localizer["Completed orders cannot be reverted to incomplete"]);
+                }
+
                 // Cập nhật trạng thái hoàn thành của đơn hàng
                 order.IsCompleted = request.IsCompleted;
                 order.CompletedAt = request.IsCompleted ? DateTime.UtcNow : (DateTime?)null;
