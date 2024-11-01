@@ -6,61 +6,61 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace KoiCare.Application.Features.Order
+public class CreateOrder
 {
-    public class CreateOrder
+    public class Command : IRequest<CommandResult<Result>>
     {
-        public class Command : IRequest<CommandResult<Result>>
-        {
-            public required int CustomerId { get; set; }
-            public required List<int> ProductIds { get; set; }
-            public required decimal Total { get; set; }
-        }
+        public required int CustomerId { get; set; }
+        public required List<int> ProductIds { get; set; }
+        public required decimal Total { get; set; }
+    }
 
-        public class Result
-        {
-            public string? Message { get; set; }
-            public int? OrderId { get; set; }
-        }
+    public class Result
+    {
+        public string? Message { get; set; }
+        public int? OrderId { get; set; }
+    }
 
-        public class Handler(
-            IRepository<Domain.Entities.Order> orderRepository,
+    public class Handler : BaseRequestHandler<Command, CommandResult<Result>>
+    {
+        private readonly IRepository<KoiCare.Domain.Entities.Order> _orderRepository;
+
+        public Handler(
+            IRepository<KoiCare.Domain.Entities.Order> orderRepository,
             IAppLocalizer localizer,
             ILogger<CreateOrder> logger,
             ILoggedUser loggedUser,
             IUnitOfWork unitOfWork
-        ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+        ) : base(localizer, logger, loggedUser, unitOfWork)
         {
-            private readonly IRepository<Domain.Entities.Order> _orderRepository = orderRepository;
+            _orderRepository = orderRepository;
+        }
 
-            public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
+        public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
+        {
+            try
             {
-                try
+                var order = new KoiCare.Domain.Entities.Order
                 {
-                    // Tạo đơn hàng mới
-                    var order = new Domain.Entities.Order
-                    {
-                        CustomerId = request.CustomerId,
-                        OrderDate = DateTime.UtcNow,
-                        Total = request.Total,
-                        CompletedAt = DateTime.UtcNow
-                    };
+                    CustomerId = request.CustomerId,
+                    OrderDate = DateTime.UtcNow,
+                    Total = request.Total,
+                    CompletedAt = null // đơn hàng chưa hoàn thành
+                };
 
-                    // Thêm đơn hàng vào cơ sở dữ liệu
-                    await _orderRepository.AddAsync(order, cancellationToken);
-                    await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _orderRepository.AddAsync(order, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                    return CommandResult<Result>.Success(new Result
-                    {
-                        Message = _localizer["Order created successfully"],
-                        OrderId = order.Id
-                    });
-                }
-                catch (Exception ex)
+                return CommandResult<Result>.Success(new Result
                 {
-                    _logger.LogError(ex, "CreateOrderError");
-                    return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
-                }
+                    Message = _localizer["Order created successfully"],
+                    OrderId = order.Id
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "CreateOrderError");
+                return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
     }
