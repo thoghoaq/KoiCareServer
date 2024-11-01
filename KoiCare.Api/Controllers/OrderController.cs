@@ -25,7 +25,7 @@ namespace KoiCare.Api.Controllers
 
         [Auth]
         [HttpGet("{orderId}")]
-        public async Task<ActionResult<GetOrderDetails.Result>> GetOrderDetails(int orderId)
+        public async Task<ActionResult<GetOrderDetails.Result>> GetOrderDetails(int orderId, [FromServices] IMediator mediator)
         {
             var query = new GetOrderDetails.Query { OrderId = orderId };
 
@@ -47,14 +47,6 @@ namespace KoiCare.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await mediator.Send(command);
-            return CommandResult(result);
-        }
-
-        [Auth]
-        [HttpPost("create-orderdetail")]
-        public async Task<ActionResult<CommandResult<bool>>> CreateOrderDetail([FromBody] CreateOrderDetail.Command command, [FromServices] IMediator mediator)
-        {
             var result = await mediator.Send(command);
             return CommandResult(result);
         }
