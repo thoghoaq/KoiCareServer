@@ -1,55 +1,67 @@
 ﻿using System.Net;
 using MediatR;
 using KoiCare.Application.Abtractions.Database;
+using KoiCare.Application.Abtractions.Localization;
+using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
-using KoiCare.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace KoiCare.Application.Features.Order
 {
     public class ChangeStatusOrder
     {
-        public class Command : IRequest<CommandResult<bool>>
+        public class Command : IRequest<CommandResult<Result>>
         {
             public int OrderId { get; set; }
             public bool IsCompleted { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, CommandResult<bool>>
+        public class Result
         {
-            private readonly IRepository<Domain.Entities.Order> _orderRepository;
-            private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<Handler> _logger;
+            public string? Message { get; set; }
+        }
 
-            public Handler(IUnitOfWork unitOfWork, ILogger<Handler> logger)
-            {
-                _unitOfWork = unitOfWork;
-                _orderRepository = unitOfWork.Repository<Domain.Entities.Order>();
-                _logger = logger;
-            }
+        public class Handler(
+            IRepository<Domain.Entities.Order> orderRepository,
+            IAppLocalizer localizer,
+            ILogger<ChangeStatusOrder> logger,
+            ILoggedUser loggedUser,
+            IUnitOfWork unitOfWork
+        ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+        {
+            private readonly IRepository<Domain.Entities.Order> _orderRepository = orderRepository;
 
-            public async Task<CommandResult<bool>> Handle(Command request, CancellationToken cancellationToken)
+            public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var order = _orderRepository.Find(request.OrderId);
+                // Tìm đơn hàng theo ID
+                var order = await _orderRepository.Queryable()
+                    .FirstOrDefaultAsync(o => o.Id == request.OrderId, cancellationToken);
 
                 if (order == null)
                 {
-                    _logger.LogWarning($"Order with ID {request.OrderId} not found.");
-                    return CommandResult<bool>.Fail(HttpStatusCode.NotFound, "Order not found");
+                    _logger.LogWarning("Order with ID {OrderId} not found.", request.OrderId);
+                    return CommandResult<Result>.Fail(HttpStatusCode.NotFound, _localizer["Order not found"]);
                 }
 
+                // Cập nhật trạng thái hoàn thành của đơn hàng
                 order.IsCompleted = request.IsCompleted;
-                _orderRepository.Update(order);
+                order.CompletedAt = request.IsCompleted ? DateTime.UtcNow : (DateTime?)null;
 
+                _orderRepository.Update(order);
                 var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
+
                 if (saveResult <= 0)
                 {
-                    _logger.LogError($"Failed to update order with ID {request.OrderId}.");
-                    return CommandResult<bool>.Fail(HttpStatusCode.InternalServerError, "Failed to update order status");
+                    _logger.LogError("Failed to update order status for Order ID {OrderId}.", request.OrderId);
+                    return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, _localizer["Failed to update order status"]);
                 }
 
-                _logger.LogInformation($"Order status updated successfully for order ID {request.OrderId}.");
-                return CommandResult<bool>.Success(true);
+                _logger.LogInformation("Order status updated successfully for Order ID {OrderId}.", request.OrderId);
+                return CommandResult<Result>.Success(new Result
+                {
+                    Message = _localizer["Order status updated successfully"]
+                });
             }
         }
     }

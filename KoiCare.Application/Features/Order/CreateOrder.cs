@@ -1,50 +1,66 @@
 ﻿using KoiCare.Application.Abtractions.Database;
+using KoiCare.Application.Abtractions.Localization;
+using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace KoiCare.Application.Features.Order
 {
     public class CreateOrder
     {
-        public class Command : IRequest<CommandResult<bool>>
+        public class Command : IRequest<CommandResult<Result>>
         {
-            public int CustomerId { get; set; }
-            public List<int> ProductIds { get; set; } = new();
-            public decimal Total { get; set; }
+            public required int CustomerId { get; set; }
+            public required List<int> ProductIds { get; set; }
+            public required decimal Total { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, CommandResult<bool>>
+        public class Result
         {
-            private readonly IRepository<Domain.Entities.Order> _orderRepository;
-            private readonly IUnitOfWork _unitOfWork;
-            private readonly ILogger<Handler> _logger;
+            public string? Message { get; set; }
+            public int? OrderId { get; set; }
+        }
 
-            public Handler(
-                IRepository<Domain.Entities.Order> orderRepository,
-                IUnitOfWork unitOfWork,
-                ILogger<Handler> logger)
-            {
-                _orderRepository = orderRepository;
-                _unitOfWork = unitOfWork;
-                _logger = logger;
-            }
+        public class Handler(
+            IRepository<Domain.Entities.Order> orderRepository,
+            IAppLocalizer localizer,
+            ILogger<CreateOrder> logger,
+            ILoggedUser loggedUser,
+            IUnitOfWork unitOfWork
+        ) : BaseRequestHandler<Command, CommandResult<Result>>(localizer, logger, loggedUser, unitOfWork)
+        {
+            private readonly IRepository<Domain.Entities.Order> _orderRepository = orderRepository;
 
-            public async Task<CommandResult<bool>> Handle(Command request, CancellationToken cancellationToken)
+            public override async Task<CommandResult<Result>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var order = new Domain.Entities.Order
+                try
                 {
-                    CustomerId = request.CustomerId,
-                    OrderDate = DateTime.UtcNow,
-                    Total = request.Total,
-                    CompletedAt = DateTime.UtcNow
-                };
+                    // Tạo đơn hàng mới
+                    var order = new Domain.Entities.Order
+                    {
+                        CustomerId = request.CustomerId,
+                        OrderDate = DateTime.UtcNow,
+                        Total = request.Total,
+                        CompletedAt = DateTime.UtcNow
+                    };
 
-                _orderRepository.Add(order);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                    // Thêm đơn hàng vào cơ sở dữ liệu
+                    await _orderRepository.AddAsync(order, cancellationToken);
+                    await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                _logger.LogInformation("Order created successfully with ID: {OrderId}", order.Id);
-                return CommandResult<bool>.Success(true);
+                    return CommandResult<Result>.Success(new Result
+                    {
+                        Message = _localizer["Order created successfully"],
+                        OrderId = order.Id
+                    });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "CreateOrderError");
+                    return CommandResult<Result>.Fail(HttpStatusCode.InternalServerError, ex.Message);
+                }
             }
         }
     }
