@@ -51,6 +51,14 @@ namespace KoiCare.Api.Controllers
             return CommandResult(result);
         }
 
+        [Auth]
+        [HttpPost("create-orderdetail")]
+        public async Task<ActionResult<CommandResult<bool>>> CreateOrderDetail([FromBody] CreateOrderDetail.Command command, [FromServices] IMediator mediator)
+        {
+            var result = await mediator.Send(command);
+            return CommandResult(result);
+        }
+
         [Auth("Admin")]
         [HttpPost("changestatus")]
         public async Task<ActionResult<ChangeStatusOrder.Result>> ChangeStatus([FromBody] ChangeStatusOrder.Command command)
