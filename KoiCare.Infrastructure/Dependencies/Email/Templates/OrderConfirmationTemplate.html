@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #FFA500;
+        }
+
+        .order-details {
+            margin: 20px 0;
+        }
+
+        .order-summary {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank You for Your Order!</h1>
+        <p>Hello, {{CustomerName}}</p>
+        <p>Your order <strong>{{OrderCode}}</strong> has been successfully placed on {{OrderDate}}.</p>
+        <div class="order-details">
+            <h3>Order Details:</h3>
+            <!-- Add order items and total here dynamically -->
+            {{OrderDetails}}
+        </div>
+        <p class="footer">If you have any questions, contact us at support@koicare.com.</p>
+    </div>
+</body>
+</html>
