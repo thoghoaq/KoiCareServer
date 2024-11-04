@@ -20,6 +20,7 @@ namespace KoiCare.Application.Features.Order
         public class OrderResult
         {
             public int Id { get; set; }
+            public required string OrderCode { get; set; }
             public required string CustomerName { get; set; }
             public DateTime OrderDate { get; set; }
             public decimal Total { get; set; }
@@ -49,6 +50,7 @@ namespace KoiCare.Application.Features.Order
                     .Select(x => new OrderResult
                     {
                         Id = x.Id,
+                        OrderCode = $"ORD{x.Id:D5}",
                         CustomerName = x.Customer.Username,
                         OrderDate = x.OrderDate,
                         Total = x.Total,

@@ -20,7 +20,7 @@ namespace KoiCare.Api.Controllers
             return CommandResult(result);
         }
 
-        [Auth]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<GetBlogById.Result>> GetBlogById(int id)
         {

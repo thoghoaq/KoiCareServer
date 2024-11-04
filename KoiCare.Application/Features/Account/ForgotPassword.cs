@@ -9,10 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options; // Thêm dòng này
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace KoiCare.Application.Features.Account
 {
@@ -47,7 +44,7 @@ namespace KoiCare.Application.Features.Account
             IAppLocalizer localizer,
             ILogger<ForgotPasswordHandler> logger,
             IUnitOfWork unitOfWork,
-            IOptions<UrlsSettings> urlsSettings) 
+            IOptions<UrlsSettings> urlsSettings)
         {
             _userRepos = userRepos;
             _authenticationService = authenticationService;
@@ -55,7 +52,7 @@ namespace KoiCare.Application.Features.Account
             _localizer = localizer;
             _logger = logger;
             _unitOfWork = unitOfWork;
-            _urlsSettings = urlsSettings.Value; 
+            _urlsSettings = urlsSettings.Value;
         }
 
         public async Task<CommandResult<ForgotPassword.Result>> Handle(ForgotPassword.Command request, CancellationToken cancellationToken)
@@ -72,13 +69,11 @@ namespace KoiCare.Application.Features.Account
                 // Tạo link reset mật khẩu sử dụng Firebase
                 var resetLink = await _authenticationService.GeneratePasswordResetLinkAsync(user.Email);
                 // Gửi email chứa đường dẫn reset mật khẩu
-                var emailResult = await _emailService.SendEmailAsync(user.Email, "Reset your password",
-                    $"Please reset your password by clicking <a href='{resetLink}'>here</a>.");
-
-                if (!emailResult)
-                {
-                    return CommandResult<ForgotPassword.Result>.Fail(_localizer["Failed to send email"]);
-                }
+                await _emailService.SendEmailAsync(user.Email, "Reset your password",
+                   Domain.Enums.EEmailTemplate.PasswordReset, new Dictionary<string, object>
+                   {
+                       { "resetLink", resetLink }
+                   });
 
                 return CommandResult<ForgotPassword.Result>.Success(new ForgotPassword.Result
                 {

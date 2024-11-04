@@ -5,6 +5,7 @@ using KoiCare.Application.Commons;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace KoiCare.Application.Features.Order
 {
@@ -14,6 +15,7 @@ namespace KoiCare.Application.Features.Order
         {
             public int Id { get; set; }
             public int OrderId { get; set; }
+            public required string OrderCode { get; set; }
             public required string ProductName { get; set; }
             public int Quantity { get; set; }
             public decimal Price { get; set; }
@@ -31,6 +33,7 @@ namespace KoiCare.Application.Features.Order
 
         public class Handler(
            IRepository<Domain.Entities.OrderDetail> orderDetailRepos,
+           IRepository<Domain.Entities.Order> orderRepos,
            IAppLocalizer localizer,
            ILogger<GetOrderDetails> logger,
            ILoggedUser loggedUser,
@@ -38,6 +41,18 @@ namespace KoiCare.Application.Features.Order
         {
             public async override Task<CommandResult<Result>> Handle(Query request, CancellationToken cancellationToken)
             {
+                // Get order to fetch OrderId for OrderCode
+                var order = await orderRepos.Queryable()
+                    .FirstOrDefaultAsync(x => x.Id == request.OrderId, cancellationToken);
+
+                if (order == null)
+                {
+                    return CommandResult<Result>.Fail(HttpStatusCode.NotFound, localizer["Order not found"]);
+                }
+
+                // Generate OrderCode
+                string orderCode = $"ORD{order.Id:D5}";
+
                 // get orderdetails
                 var orderdetails = await orderDetailRepos.Queryable()
                     .Include(x => x.Product)
@@ -47,6 +62,7 @@ namespace KoiCare.Application.Features.Order
                     {
                         Id = x.Id,
                         OrderId = x.OrderId,
+                        OrderCode = orderCode,
                         ProductName = x.Product.Name,
                         Quantity = x.Quantity,
                         Price = x.Price,
@@ -59,6 +75,4 @@ namespace KoiCare.Application.Features.Order
             }
         }
     }
-
-
 }
