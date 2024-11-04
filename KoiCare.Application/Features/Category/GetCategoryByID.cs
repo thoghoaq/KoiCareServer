@@ -14,6 +14,7 @@ namespace KoiCare.Application.Features.Category
         {
             public int Id { get; set; }
             public string Name { get; set; } = string.Empty;
+            public string? ImageUrl { get; set; }
         }
         public class Query : IRequest<CommandResult<Result>>
         {
@@ -41,7 +42,8 @@ namespace KoiCare.Application.Features.Category
                 var result = new Result
                 {
                     Id = category.Id,
-                    Name = category.Name
+                    Name = category.Name,
+                    ImageUrl = category.ImageUrl
                 };
 
                 return CommandResult<Result>.Success(result);

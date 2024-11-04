@@ -1,5 +1,4 @@
 ﻿using KoiCare.Application.Features.Category;
-using KoiCare.Infrastructure.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -13,6 +13,7 @@ namespace KoiCare.Application.Features.Category
         {
             public required int Id { get; set; }
             public required string Name { get; set; }
+            public string? ImageUrl { get; set; }
 
         }
 
@@ -28,7 +29,7 @@ namespace KoiCare.Application.Features.Category
             public string? Search { get; set; }
         }
 
-        public class Handler (
+        public class Handler(
             IAppLocalizer localizer,
             ILogger<GetAllCategory> logger,
             ILoggedUser loggedUser,
@@ -43,7 +44,8 @@ namespace KoiCare.Application.Features.Category
                     .Select(x => new CategoryResult
                     {
                         Id = x.Id,
-                        Name = x.Name
+                        Name = x.Name,
+                        ImageUrl = x.ImageUrl
                     });
 
                 // Pagination
