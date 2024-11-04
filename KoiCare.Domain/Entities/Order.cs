@@ -6,6 +6,8 @@
         public int CustomerId { get; set; }
         public DateTime OrderDate { get; set; }
         public decimal Total { get; set; }
+        public required string PhoneNumber { get; set; }
+        public required string Address { get; set; }
         public bool IsCompleted { get; set; }
         public DateTime? CompletedAt { get; set; }
 

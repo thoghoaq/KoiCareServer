@@ -15,7 +15,9 @@ public class CreateOrder
 {
     public class Command : IRequest<CommandResult<Result>>
     {
-        public required List<OrderDetailDto> OrderDetails { get; set; } = new();
+        public required string PhoneNumber { get; set; }
+        public required string Address { get; set; }
+        public required List<OrderDetailDto> OrderDetails { get; set; } = [];
     }
 
     public class OrderDetailDto
@@ -60,6 +62,8 @@ public class CreateOrder
                     CustomerId = _loggedUser.UserId,
                     OrderDate = DateTime.UtcNow,
                     Total = total,
+                    PhoneNumber = request.PhoneNumber,
+                    Address = request.Address,
                     IsCompleted = false,
                     CompletedAt = null,
                     OrderDetails = request.OrderDetails.Select(d => new OrderDetail
@@ -83,6 +87,9 @@ public class CreateOrder
                     { "CustomerName", _loggedUser.UserName },
                     { "OrderCode", orderCode },
                     { "OrderDate", order.OrderDate.ToString("yyyy-MM-dd") },
+                    { "PhoneNumber", order.PhoneNumber },
+                    { "Address", order.Address },
+                    { "Total", total.ToString("C") },
                     { "OrderDetails", GenerateOrderDetailsHtml(order.OrderDetails.ToList()) }
                 };
                 await _emailService.SendEmailAsync(_loggedUser.Email, subject, Domain.Enums.EEmailTemplate.CustomerOrder, parameters);

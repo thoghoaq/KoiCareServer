@@ -23,6 +23,8 @@ namespace KoiCare.Application.Features.Order
             public required string OrderCode { get; set; }
             public required string CustomerName { get; set; }
             public DateTime OrderDate { get; set; }
+            public required string PhoneNumber { get; set; }
+            public required string Address { get; set; }
             public decimal Total { get; set; }
             public bool IsCompleted { get; set; }
             public DateTime? CompletedAt { get; set; }
@@ -53,6 +55,8 @@ namespace KoiCare.Application.Features.Order
                         OrderCode = $"ORD{x.Id:D5}",
                         CustomerName = x.Customer.Username,
                         OrderDate = x.OrderDate,
+                        Address = x.Address,
+                        PhoneNumber = x.PhoneNumber,
                         Total = x.Total,
                         IsCompleted = x.IsCompleted,
                         CompletedAt = x.CompletedAt,
