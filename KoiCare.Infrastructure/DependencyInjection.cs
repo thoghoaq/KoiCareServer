@@ -5,8 +5,10 @@ using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Email;
 using KoiCare.Application.Abtractions.Localization;
 using KoiCare.Application.Abtractions.LoggedUser;
+using KoiCare.Application.Abtractions.Storage;
 using KoiCare.Infrastructure.Dependencies.Database;
 using KoiCare.Infrastructure.Dependencies.Firebase.Authentication;
+using KoiCare.Infrastructure.Dependencies.Firebase.Storage;
 using KoiCare.Infrastructure.Dependencies.Localization;
 using KoiCare.Infrastructure.Dependencies.LoggedUser;
 using KoiCare.Infrastructure.Services;
@@ -17,9 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace KoiCare.Infrastructure
 {
@@ -73,6 +74,8 @@ namespace KoiCare.Infrastructure
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             // Thêm các đăng ký cho IEmailService và EmailService
             services.AddTransient<IEmailService, EmailService>();
+
+            services.AddScoped<IStorageService, FirebaseStorageService>();
 
             // Cấu hình SmtpSettings từ appsettings.json
             services.Configure<SmtpSettings>(configuration.GetSection("Email:SmtpSettings"));

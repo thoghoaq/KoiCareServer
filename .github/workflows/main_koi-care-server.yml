@@ -41,6 +41,7 @@ jobs:
           Email.SmtpSettings.UserName: ${{ secrets.EMAIL_SMTP_SETTINGS_USERNAME }}
           Email.SmtpSettings.Password: ${{ secrets.EMAIL_SMTP_SETTINGS_PASSWORD }}
           Email.SmtpSettings.FromEmail: ${{ secrets.EMAIL_SMTP_SETTINGS_FROMEMAIL }}
+          FirebaseStorage.ApiKey: ${{ secrets.FIREBASE_STORAGE_APIKEY }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
