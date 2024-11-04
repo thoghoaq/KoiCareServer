@@ -28,7 +28,7 @@ namespace KoiCare.Application.Features.Blog
             public int Id { get; set; }
             public required string Title { get; set; }
             public required string Content { get; set; }
-            public DateTime CreatedDate { get; set; }
+            public string? Image { get; set; }
             public required string AuthorName { get; set; }
             public DateTime CreatedAt { get; internal set; }
         }
@@ -52,6 +52,7 @@ namespace KoiCare.Application.Features.Blog
                         Id = x.Id,
                         Title = x.Title,
                         Content = x.Content,
+                        Image = x.Image,
                         CreatedAt = x.CreatedAt,
                         AuthorName = x.Author.Username, // Assuming Author has Username
                     });
