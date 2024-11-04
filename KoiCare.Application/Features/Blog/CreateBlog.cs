@@ -15,6 +15,7 @@ namespace KoiCare.Application.Features.Blog
         {
             public required string Title { get; set; }
             public required string Content { get; set; }
+            public string? Image { get; set; }
         }
 
         public class Result
@@ -42,6 +43,7 @@ namespace KoiCare.Application.Features.Blog
                         Title = request.Title,
                         Content = request.Content,
                         AuthorId = _loggedUser.UserId, // Lấy ID người dùng hiện tại
+                        Image = request.Image,
                         CreatedAt = DateTime.UtcNow,
                     };
 

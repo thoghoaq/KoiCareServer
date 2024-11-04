@@ -17,6 +17,7 @@ namespace KoiCare.Application.Features.Blog
             public required int Id { get; set; }
             public required string Title { get; set; }
             public required string Content { get; set; }
+            public string? Image { get; set; }
             public DateTime CreatedAt { get; internal set; }
         }
 
@@ -46,6 +47,10 @@ namespace KoiCare.Application.Features.Blog
                     blog.Title = request.Title;
                     blog.Content = request.Content;
                     blog.CreatedAt = request.CreatedAt;
+                    if (request.Image != null)
+                    {
+                        blog.Image = request.Image;
+                    }
 
                     blogRepos.Update(blog);
                     await _unitOfWork.SaveChangesAsync(cancellationToken);

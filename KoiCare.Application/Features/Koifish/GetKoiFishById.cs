@@ -46,6 +46,7 @@ namespace KoiCare.Application.Features.Koifish
                 var koifish = await koiRepos.Queryable()
                     .Include(x => x.KoiType)
                     .Include(x => x.Pond)
+                    .Include(x => x.KoiGrowths)
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (koifish == null)
@@ -63,8 +64,8 @@ namespace KoiCare.Application.Features.Koifish
                     PondName = koifish.Pond.Name,
                     ImageUrl = koifish.ImageUrl,
                     Age = koifish.Age,
-                    Length = koifish.Length,
-                    Weight = koifish.Weight,
+                    Length = koifish.KoiGrowths.OrderByDescending(x => x.MeasuredAt).FirstOrDefault()?.Length ?? koifish.Length,
+                    Weight = koifish.KoiGrowths.OrderByDescending(x => x.MeasuredAt).FirstOrDefault()?.Weight ?? koifish.Weight,
                     Gender = koifish.Gender,
                     Origin = koifish.Origin,
                     Shape = koifish.Shape,

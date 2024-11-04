@@ -1,11 +1,11 @@
 ﻿using KoiCare.Application.Abtractions.Database;
 using KoiCare.Application.Abtractions.Localization;
+using KoiCare.Application.Abtractions.LoggedUser;
 using KoiCare.Application.Commons;
 using KoiCare.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using KoiCare.Application.Abtractions.LoggedUser;
 
 namespace KoiCare.Application.Features.Blog
 {
@@ -22,6 +22,7 @@ namespace KoiCare.Application.Features.Blog
             public string Title { get; set; } = string.Empty;
             public string Content { get; set; } = string.Empty;
             public string Author { get; set; } = string.Empty;
+            public string? Image { get; set; }
             public DateTime CreatedAt { get; set; }
         }
 
@@ -50,6 +51,7 @@ namespace KoiCare.Application.Features.Blog
                     Title = blog.Title,
                     Content = blog.Content,
                     Author = blog.Author.Username,
+                    Image = blog.Image,
                     CreatedAt = blog.CreatedAt
                 };
 

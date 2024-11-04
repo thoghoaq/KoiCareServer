@@ -51,23 +51,29 @@ namespace KoiCare.Application.Features.Koifish
                 var query = koiRepos.Queryable()
                     .Include(x => x.Pond)
                     .Include(x => x.KoiType)
+                    .Include(x => x.KoiGrowths)
                     .Where(x => x.PondId.Equals(request.PondId))
-                    .Select(x => new KoiResult
+                    .AsEnumerable()
+                    .Select(x =>
                     {
-                        Id = x.Id,
-                        Name = x.Name,
-                        KoiTypeId = x.KoiTypeId,
-                        KoiType = x.KoiType.Name,
-                        PondId = x.PondId,
-                        PondName = x.Pond.Name,
-                        ImageUrl = x.ImageUrl,
-                        Gender = x.Gender,
-                        Weight = x.Weight,
-                        Age = x.Age,
-                        Length = x.Length,
-                        Origin = x.Origin,
-                        Shape = x.Shape,
-                        Breed = x.Breed,
+                        var growth = x.KoiGrowths.OrderByDescending(y => y.MeasuredAt).FirstOrDefault();
+                        return new KoiResult
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            KoiTypeId = x.KoiTypeId,
+                            KoiType = x.KoiType.Name,
+                            PondId = x.PondId,
+                            PondName = x.Pond.Name,
+                            ImageUrl = x.ImageUrl,
+                            Gender = x.Gender,
+                            Weight = growth?.Weight ?? x.Weight,
+                            Age = x.Age,
+                            Length = growth?.Length ?? x.Length,
+                            Origin = x.Origin,
+                            Shape = x.Shape,
+                            Breed = x.Breed,
+                        };
                     });
 
                 // Trả về kết quả
