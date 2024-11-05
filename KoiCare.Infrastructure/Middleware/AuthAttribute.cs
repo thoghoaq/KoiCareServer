@@ -21,6 +21,13 @@ namespace KoiCare.Infrastructure.Middleware
             {
                 return;
             }
+            var authHeader = context.HttpContext.Request.Headers.Authorization.ToString();
+            if (authHeader.IsNullOrEmpty() || !authHeader.Contains("Bearer "))
+            {
+                context.ModelState.AddModelError("Authorization", "Authorization header is missing");
+                context.Result = new UnauthorizedResult();
+                return;
+            }
 
             var token = context.HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
 
