@@ -3,6 +3,7 @@ using KoiCare.Application.Features.Order;
 using KoiCare.Infrastructure.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace KoiCare.Api.Controllers
 {
@@ -48,8 +49,20 @@ namespace KoiCare.Api.Controllers
             }
 
             var result = await mediator.Send(command);
-            return CommandResult(result);
+
+            // Kiểm tra nếu CommandResult là thành công
+            if (result.IsSuccess)
+            {
+                // Trả về Payload chứa dữ liệu trả về khi thành công
+                return Ok(result.Payload);  // Đây là cách trả về kết quả thành công từ Payload
+            }
+            else
+            {
+                // Trả về lỗi với FailureReason khi không thành công
+                return StatusCode((int)(result.StatusCode ?? HttpStatusCode.BadRequest), result.FailureReason);  // Trả về lý do thất bại
+            }
         }
+
 
         [Auth("Admin")]
         [HttpPost("changestatus")]

@@ -7,6 +7,8 @@ using System.Reflection;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using KoiCare.Application.Abtractions.Configuration;
+using KoiCare.Application.Abtractions.Payments;
+using KoiCare.Infrastructure.Dependencies.VnPay;
 
 var allowSpecificOrigins = "_koiCareAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +25,14 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add Infrastructure services (đã bao gồm IEmailService, EmailService, SmtpClient)
+// Add Infrastructure services (including IEmailService, EmailService, SmtpClient)
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Đăng ký VnPayConfig từ appsettings.json
+builder.Services.Configure<VnPayConfig>(builder.Configuration.GetSection("VnPayConfig"));
+
+// Đăng ký VnPayService
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 // Configure RouteOptions
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -70,7 +78,7 @@ builder.Services.AddSwaggerGen(c =>
 // Add Controllers
 builder.Services.AddControllers();
 
-// Add Swagger/OpenAPI services (đã được cấu hình ở trên, không cần thêm lại)
+// Add Swagger/OpenAPI services (already configured above, no need to add again)
 builder.Services.AddEndpointsApiExplorer();
 
 // UrlsSettings
