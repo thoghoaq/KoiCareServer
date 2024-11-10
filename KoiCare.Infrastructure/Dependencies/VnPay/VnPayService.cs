@@ -15,8 +15,9 @@ namespace KoiCare.Infrastructure.Dependencies.VnPay
             _config = config.Value ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public string GeneratePaymentUrl(int orderId, decimal amount, string returnUrl)
+        public string GeneratePaymentUrl(int orderId, decimal amount, string? returnUrl = null)
         {
+            returnUrl ??= _config.ReturnUrl;
             // Validate required fields
             if (string.IsNullOrWhiteSpace(_config.TerminalId)) throw new ArgumentNullException(nameof(_config.TerminalId), "Terminal ID is required.");
             if (string.IsNullOrWhiteSpace(_config.SecretKey)) throw new ArgumentNullException(nameof(_config.SecretKey), "Secret Key is required.");

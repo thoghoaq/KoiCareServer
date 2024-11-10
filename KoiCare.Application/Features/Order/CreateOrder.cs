@@ -95,7 +95,7 @@ namespace KoiCare.Application.Features.Order
                     string orderCode = $"ORD{order.Id:D5}";
 
                     // Generate VNPAY payment URL
-                    string paymentUrl = vnPayService.GeneratePaymentUrl(order.Id, total, "https://swp391-fall2024.vercel.app/cart"); // Replace with your actual return URL
+                    string paymentUrl = vnPayService.GeneratePaymentUrl(order.Id, total);
 
                     // Send confirmation email to the customer
                     string subject = "Order Confirmation";

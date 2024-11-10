@@ -2,6 +2,6 @@
 {
     public interface IVnPayService
     {
-        string GeneratePaymentUrl(int orderId, decimal amount, string returnUrl);
+        string GeneratePaymentUrl(int orderId, decimal amount, string? returnUrl = null);
     }
 }

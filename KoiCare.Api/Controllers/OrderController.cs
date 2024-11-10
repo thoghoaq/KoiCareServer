@@ -50,6 +50,15 @@ namespace KoiCare.Api.Controllers
 
             var result = await mediator.Send(command);
             return CommandResult(result);
+            {
+                // Trả về Payload chứa dữ liệu trả về khi thành công
+                return Ok(result.Payload);  // Đây là cách trả về kết quả thành công từ Payload
+            }
+            else
+            {
+                // Trả về lỗi với FailureReason khi không thành công
+                return StatusCode((int)(result.StatusCode ?? HttpStatusCode.BadRequest), result.FailureReason);  // Trả về lý do thất bại
+            }
         }
 
 
