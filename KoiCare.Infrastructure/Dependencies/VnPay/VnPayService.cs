@@ -50,19 +50,18 @@ namespace KoiCare.Infrastructure.Dependencies.VnPay
                     data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
                 }
             }
-            string queryString = data.ToString();
-
-            _config.PaymentUrl += "?" + queryString;
-            String signData = queryString;
-            if (signData.Length > 0)
+            // Remove trailing "&" if present
+            if (data.Length > 0)
             {
-
-                signData = signData.Remove(data.Length - 1, 1);
+                data.Length -= 1; // Remove last '&'
             }
-            string vnp_SecureHash = VnPayUtils.GenerateSecureHash(signData, _config.SecretKey);
-            _config.PaymentUrl += "vnp_SecureHash=" + vnp_SecureHash;
 
-            return _config.PaymentUrl;
+            // Create the complete payment URL and secure hash
+            string paymentUrl = $"{_config.PaymentUrl}?{data}";
+            string vnp_SecureHash = VnPayUtils.GenerateSecureHash(data.ToString(), _config.SecretKey);
+            paymentUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+
+            return paymentUrl;
         }
     }
 }
